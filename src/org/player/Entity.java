@@ -18,19 +18,19 @@ public interface Entity {
 	 * The health of the entity.
 	 * @return the entity.
 	 */
-	public double getHealth();
+	public float getHealth();
 	
 	/**
 	 * The speed that the entity walks in.
 	 * @return the walk-speed.
 	 */
-	public double getWalkSpeed();
+	public float getWalkSpeed();
 	
 	/**
 	 * The jump-height of the entity.
 	 * @return the jump-height.d
 	 */
-	public double getJumpHeight();
+	public float getJumpHeight();
 	
 	/**
 	 * Go left with the entity.
