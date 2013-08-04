@@ -22,6 +22,8 @@ public class KeyControls {
 			
 		}
 		
+		System.out.println(EntityPlayer.offsetX);
+		
 		input.consumeEvent();
 	}
  
