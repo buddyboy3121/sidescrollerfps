@@ -1,16 +1,17 @@
 package org.player;
 
+import org.main.Game;
 import org.tools.Vector2D;
 
 public class EntityPlayer implements Entity {
 	
-	public static int offsetX = 0;
-	public static int offsetY = 0;
+	public static float offsetX = 100;
+	public static float offsetY = 100;
 
 	private String name;
 	private float health;
-	private static Vector2D position;
-	private float walkSpeed = 0.02f;
+	private static Vector2D position = new Vector2D(offsetX + Game.screenWidth / 2, offsetY + Game.screenHeight / 2);
+	private float walkSpeed = 0.01f;
 	private float jumpHeight;
 	
 	public float pointPos;
@@ -48,11 +49,13 @@ public class EntityPlayer implements Entity {
 	@Override
 	public void left(int delta) {
 		position.addX(walkSpeed * -delta);
+		offsetX += walkSpeed * -delta;
 	}
 
 	@Override
 	public void right(int delta) {
 		position.addX(walkSpeed * delta);
+		offsetX += walkSpeed * delta;
 	}
 
 	@Override
