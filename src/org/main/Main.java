@@ -19,7 +19,7 @@ public class Main extends StateBasedGame {
 	public static void main(String args[]) throws SlickException {
 		AppGameContainer app = new AppGameContainer(new Main("2D Shooter"));
 		
-		app.setDisplayMode(800, 800, false);
+		app.setDisplayMode(Game.screenWidth, Game.screenHeight, false);
 		app.setAlwaysRender(true);
 		app.setTargetFrameRate(60);
 		
