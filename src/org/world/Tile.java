@@ -15,10 +15,19 @@ public class Tile {
 		type = typeOfTile;
 	}
 	
+	/**
+	 * Render the Tile with the specified {@link Graphics}.
+	 * @param g The graphics to use for drawing the image.
+	 */
 	public void render(Graphics g) {
 		g.drawImage(type.tileImage, coordinates.getX(), coordinates.getY());
 	}
 	
+	/**
+	 * Set a new location for the Tile.
+	 * @param x The X-coordinate.
+	 * @param y The Y-coordinate.
+	 */
 	public void setLocation(int x, int y) {
 		coordinates.setBounds(x, y);
 	}
