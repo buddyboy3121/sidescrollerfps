@@ -5,6 +5,9 @@ import org.world.Tile;
 
 public class Generator {
 	
+	/**
+	 * Generates {@link Tile}s to create a world.
+	 */
 	public void generateLevel() {
 		LevelData level = new LevelData();
 		

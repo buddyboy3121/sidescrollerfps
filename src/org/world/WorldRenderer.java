@@ -2,7 +2,7 @@ package org.world;
 
 import org.newdawn.slick.Graphics;
 
-public class Renderer {
+public class WorldRenderer {
 
 	public void render(Graphics g) {
 		
