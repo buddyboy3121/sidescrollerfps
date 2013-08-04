@@ -18,7 +18,8 @@ public class Vector2D {
 	}
 
 	/**
-	 * Set the new X-coordinate of the Vector.
+	 * Set the new X-coordinate of the Vector.<br>
+	 * * Use the {@link #setBounds(int, int)} for setting both coordinates.
 	 * @param x The X-coordinate.
 	 */
 	public void setX(int x) {
@@ -34,7 +35,8 @@ public class Vector2D {
 	}
 	
 	/**
-	 * Set the new y-coordinate of the Vector.
+	 * Set the new y-coordinate of the Vector.<br>
+	 * Use the {@link #setBounds(int, int)} for setting both coordinates.
 	 * @param y The Y-coordinate.
 	 */
 	public void setY(int y) {
@@ -43,8 +45,8 @@ public class Vector2D {
 	
 	/**
 	 * Set the new x and y coordinates of the Vector.
-	 * @param x
-	 * @param y
+	 * @param x The X-coordinate of the new bounds.
+	 * @param y The Y-coordinate of the new bounds.
 	 */
 	public void setBounds(int x, int y) {
 		this.x = x;
