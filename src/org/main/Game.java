@@ -10,8 +10,8 @@ import org.world.server.Generator;
 
 public class Game extends BasicGameState {
 
-	public static int screenWidth = 800;
-	public static int screenHeight = 800;
+	public static int screenWidth = 1025;
+	public static int screenHeight = 668;
 	LevelData level = new LevelData();
 	
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
