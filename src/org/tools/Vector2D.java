@@ -41,4 +41,14 @@ public class Vector2D {
 		this.y = y;
 	}
 	
+	/**
+	 * Set the new x and y coordinates of the Vector.
+	 * @param x
+	 * @param y
+	 */
+	public void setBounds(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 }

@@ -19,6 +19,10 @@ public class Tile {
 		g.drawImage(type.tileImage, cordinates.getX(), cordinates.getY());
 	}
 	
+	public void setLocation(int x, int y) {
+		cordinates.setBounds(x, y);
+	}
+	
 	public void update(int delta) {
 		
 	}
