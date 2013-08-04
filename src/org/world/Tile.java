@@ -7,20 +7,20 @@ import org.tools.Vector2D;
 
 public class Tile {
 
-	private Vector2D cordinates;
+	private Vector2D coordinates;
 	public types type;
 	
 	public Tile(types typeOfTile, int x, int y) {
-		cordinates = new Vector2D(x, y);
+		coordinates = new Vector2D(x, y);
 		type = typeOfTile;
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(type.tileImage, cordinates.getX(), cordinates.getY());
+		g.drawImage(type.tileImage, coordinates.getX(), coordinates.getY());
 	}
 	
 	public void setLocation(int x, int y) {
-		cordinates.setBounds(x, y);
+		coordinates.setBounds(x, y);
 	}
 	
 	public void update(int delta) {
