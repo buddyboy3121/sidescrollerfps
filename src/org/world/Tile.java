@@ -14,30 +14,30 @@ public class Tile {
 		this.x = x;
 		this.y = y;
 		type = typeOfTile;
-		
 	}
 	
 	public void render(Graphics g) {
-		
+		g.drawImage(type.tileImage, x, y);
 	}
 	
 	public void update(int delta) {
 		
 	}
 	
-	enum types {
+	public enum types {
 		ROCK("images/tiles/rock.png"), STONE("images/tiles/stone.png"), GRASS("images/tiles/grass.png");
 		
-		Image tileImage;
+		public Image tileImage;
 		
-		types(String path) {
+		private types(String path) {
 			try {
-				tileImage = new Image(path);
+				
+				Image image = new Image("images/tiles/rock.png");
+				tileImage = image;
 			}catch(SlickException e) {
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 }
