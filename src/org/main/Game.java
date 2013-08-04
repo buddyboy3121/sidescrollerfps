@@ -21,12 +21,6 @@ public class Game extends BasicGameState {
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		
-		for (int x = 0; x < 800 / 32; x++) {
-			
-			for (int y = 0; y < 800 / 32; y++) {
-				level.getTileFromLevelArray(x, y).render(g);
-			}
-		}
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
