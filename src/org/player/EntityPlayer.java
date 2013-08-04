@@ -3,16 +3,19 @@ package org.player;
 import org.tools.Vector2D;
 
 public class EntityPlayer implements Entity {
+	
+	public static int offsetX = 0;
+	public static int offsetY = 0;
 
 	private String name;
 	private float health;
-	private Vector2D position;
-	private float walkSpeed;
+	private static Vector2D position;
+	private float walkSpeed = 0.02f;
 	private float jumpHeight;
 	
 	@Override
 	public String getEntityId() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -28,7 +31,7 @@ public class EntityPlayer implements Entity {
 
 	@Override
 	public Vector2D getPosition() {
-		return this.position;
+		return position;
 	}
 
 	@Override
@@ -42,44 +45,37 @@ public class EntityPlayer implements Entity {
 	}
 
 	@Override
-	public void left() {
-		// TODO Auto-generated method stub
+	public void left(int delta) {
+		position.addX(walkSpeed * -delta);
+	}
+
+	@Override
+	public void right(int delta) {
+		position.addX(walkSpeed * delta);
+	}
+
+	@Override
+	public void up(int delta) {
 		
 	}
 
 	@Override
-	public void right() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void up() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void down() {
-		// TODO Auto-generated method stub
+	public void down(int delta) {
 		
 	}
 
 	@Override
 	public void connect() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void draw() {
-		// TODO Auto-generated method stub
 		
 	}
 
