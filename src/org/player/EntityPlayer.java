@@ -13,6 +13,8 @@ public class EntityPlayer implements Entity {
 	private float walkSpeed = 0.02f;
 	private float jumpHeight;
 	
+	public float pointPos;
+	
 	@Override
 	public String getEntityId() {
 		
