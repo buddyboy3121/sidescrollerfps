@@ -2,13 +2,13 @@ package org.tools;
 
 public class Vector2D {
 
-	private int x, y;
+	private float x, y;
 	
 	/**
 	 * Returns the X coordinate.
 	 * @return the X coordinate.
 	 */
-	public int getX() {
+	public float getX() {
 		return this.x;
 	}
 
@@ -16,7 +16,7 @@ public class Vector2D {
 	 * Returns the Y coordinate.
 	 * @return the Y coordinate.
 	 */
-	public int getY() {
+	public float getY() {
 		return this.y;
 	}
 	

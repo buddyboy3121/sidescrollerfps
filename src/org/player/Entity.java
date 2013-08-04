@@ -1,5 +1,7 @@
 package org.player;
 
+import org.tools.Vector2D;
+
 public interface Entity {
 	
 	/**
@@ -16,9 +18,15 @@ public interface Entity {
 	
 	/**
 	 * The health of the entity.
-	 * @return the entity.
+	 * @return the health.
 	 */
 	public float getHealth();
+	
+	/**
+	 * The position of the entity.
+	 * @return the position.
+	 */
+	public Vector2D getPosition();
 	
 	/**
 	 * The speed that the entity walks in.
