@@ -5,8 +5,8 @@ You will be able to build your own base, and then fight online or generated leve
 
 Ideas
 ================
-In-game currency
-Events
-can buy reskins and guns with ingame currency or real currentcy
-competitions (can win new characters, special guns and skins, etc)
+In-game currency                                                      
+Events                                                                
+can buy reskins and guns with ingame currency or real currentcy                  
+competitions (can win new characters, special guns and skins, etc)            
 grinding game (must play hours to get enough ingame currency for a gun)
