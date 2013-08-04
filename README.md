@@ -11,4 +11,4 @@ Ideas
 - Competitions (can win new characters, special guns and skins, etc).            
 - Not a grinding game.
 - Earn money at end of round depending on score that round
-- score is calculated by how many times you died, how many people you killed, how many tiles destroyed, et cetera...
+- Score is calculated by how many times you died, how many people you killed, how many tiles destroyed, etc.
