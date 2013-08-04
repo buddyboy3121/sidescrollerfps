@@ -3,16 +3,23 @@ package org.world;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.player.EntityPlayer;
 import org.tools.Vector2D;
 
 public class Tile {
 
 	private Vector2D coordinates;
+	public static int size = 32;
 	public types type;
+	
+	//Stores the original x and y positions.
+	private int originalX, originalY;
 	
 	public Tile(types typeOfTile, int x, int y) {
 		coordinates = new Vector2D(x, y);
 		type = typeOfTile;
+		originalX = x;
+		originalY = y;
 	}
 	
 	/**
@@ -32,8 +39,9 @@ public class Tile {
 		coordinates.setBounds(x, y);
 	}
 	
-	public void update(int delta) {
-		
+	public void update() {
+		coordinates.setX(originalX - EntityPlayer.offsetX);
+		coordinates.setY(originalY - EntityPlayer.offsetY);
 	}
 	
 	public enum types {
@@ -53,3 +61,4 @@ public class Tile {
 	}
 	
 }
+
