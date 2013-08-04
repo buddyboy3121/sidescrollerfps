@@ -17,7 +17,6 @@ public class EntityPlayer implements Entity {
 	
 	@Override
 	public String getEntityId() {
-		
 		return null;
 	}
 
