@@ -18,11 +18,27 @@ public class Vector2D {
 	}
 
 	/**
+	 * Set the new X-coordinate of the Vector.
+	 * @param x The X-coordinate.
+	 */
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	/**
 	 * Returns the Y coordinate.
 	 * @return the Y coordinate.
 	 */
 	public float getY() {
 		return this.y;
+	}
+	
+	/**
+	 * Set the new y-coordinate of the Vector.
+	 * @param y The Y-coordinate.
+	 */
+	public void setY(int y) {
+		this.y = y;
 	}
 	
 }
