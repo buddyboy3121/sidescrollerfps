@@ -43,22 +43,22 @@ public interface Entity {
 	/**
 	 * Go left with the entity.
 	 */
-	public void left();
+	public void left(int delta);
 	
 	/**
 	 * Go right with the entity.
 	 */
-	public void right();
+	public void right(int delta);
 	
 	/**
 	 * Go up with the entity.
 	 */
-	public void up();
+	public void up(int delta);
 	
 	/**
 	 * Go down with the entity.
 	 */
-	public void down();
+	public void down(int delta);
 	
 	public void connect();
 	
@@ -70,3 +70,4 @@ public interface Entity {
 	public void draw();
 	
 }
+
