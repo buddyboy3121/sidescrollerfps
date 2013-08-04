@@ -27,7 +27,7 @@ public class Vector2D {
 	}
 	
 	/**
-	 * Adds a float to x.
+	 * Adds a float to the X-coordinate.
 	 * @param x The X-coordinate.
 	 */
 	public void addX(float x) {
@@ -52,7 +52,7 @@ public class Vector2D {
 	}
 	
 	/**
-	 * Adds a float to y coordinate.
+	 * Adds a float to the Y-coordinate.
 	 * @param y The Y-coordinate.
 	 */
 	public void addY(float y) {
