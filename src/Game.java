@@ -7,13 +7,15 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Game extends BasicGameState {
 
+	public static int screenWidth = 800;
+	public static int screenHeight = 800;
 	
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
 	}
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
-		g.drawOval(25, 25, 500, 500);
+		
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
