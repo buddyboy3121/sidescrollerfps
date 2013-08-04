@@ -18,7 +18,7 @@ public class Vector2D {
 	}
 
 	/**
-	 * Set the new X-coordinate of the Vector.
+	 * Set the new X-coordinate of the Vector.<br>
 	 * * Use the {@link #setBounds(int, int)} for setting both coordinates.
 	 * @param x The X-coordinate.
 	 */
