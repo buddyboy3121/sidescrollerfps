@@ -15,9 +15,8 @@ public class Game extends BasicGameState {
 	LevelData level = new LevelData();
 	
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		Generator generater = new Generator();
-		
-		generater.generateLevel();
+		Generator generator = new Generator();
+		generator.generateLevel();
 	}
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {

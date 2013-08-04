@@ -1,7 +1,5 @@
 package org.world;
 
-import org.main.Game;
-
 public class LevelData {
 
 	public static int levelWidth = 2000;

@@ -1,9 +1,7 @@
 package org.world.server;
 
-import org.main.Game;
 import org.world.LevelData;
 import org.world.Tile;
-import org.world.Tile.types;
 
 public class Generator {
 	
