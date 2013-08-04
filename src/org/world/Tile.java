@@ -1,5 +1,9 @@
 package org.world;
 
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+
 public class Tile {
 
 	public int x;
@@ -13,8 +17,27 @@ public class Tile {
 		
 	}
 	
+	public void render(Graphics g) {
+		
+	}
+	
+	public void update(int delta) {
+		
+	}
 	
 	enum types {
-		ROCK, STONE, GRASS, WOOD, 
+		ROCK("images/tiles/rock.png"), STONE("images/tiles/stone.png"), GRASS("images/tiles/grass.png");
+		
+		Image tileImage;
+		
+		types(String path) {
+			try {
+				tileImage = new Image(path);
+			}catch(SlickException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
+	
 }
