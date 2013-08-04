@@ -11,7 +11,7 @@ public class EntityPlayer implements Entity {
 	private String name;
 	private float health;
 	private static Vector2D position = new Vector2D(offsetX + Game.screenWidth / 2, offsetY + Game.screenHeight / 2);
-	private float walkSpeed = 0.01f;
+	private float walkSpeed = 0.1f;
 	private float jumpHeight;
 	
 	public float pointPos;
