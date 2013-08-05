@@ -6,14 +6,14 @@ public class ItemGunWeapon extends ItemWeapon {
 	private int magazines;
 	private int magAmmo;
 	
-	public ItemGunWeapon(String name, String id, ItemTier tier {
+	public ItemGunWeapon(String name, String id, ItemTier tier) {
 		super(name, id, tier);
 	}
 
 	/**
 	 * Fire the gun.<br>
 	 * This automatically removes ammunation from the magazine.<br>
-	 * When there's no magazines left, an event will be thrown.
+	 * When there's no magazines left, an event will be raised.
 	 */
 	public final void fire() {
 		if (ammunation >= 1) {         			// Checks if there's any ammunation left in the magazine.
