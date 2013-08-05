@@ -11,6 +11,19 @@ public interface Entity {
 	public String getEntityId();
 	
 	/**
+	 * Returns whether the entity is dead.
+	 * @return the death-state.
+	 */
+	public boolean getIsDead();
+	
+	/**
+	 * Returns any additional information of the entity.<br>
+	 * All data must be converted to {@link Byte}.
+	 * @return the additional metadata.
+	 */
+	public byte[][] getMetadata();
+	
+	/**
 	 * The name of the entity.
 	 * @return the name.
 	 */
@@ -36,7 +49,7 @@ public interface Entity {
 	
 	/**
 	 * The jump-height of the entity.
-	 * @return the jump-height.d
+	 * @return the jump-height.
 	 */
 	public float getJumpHeight();
 	

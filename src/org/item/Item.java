@@ -9,6 +9,13 @@ public interface Item {
 	public String getName();
 	
 	/**
+	 * Returns the unique identifier of the item.<br>
+	 * It must be different from all the other item's identifiers.
+	 * @return the identifier.
+	 */
+	public String getIdentifier();
+	
+	/**
 	 * Returns the Tier of the Item, representing how expensive it was.
 	 * @return the Tier.
 	 */

@@ -10,6 +10,8 @@ public class EntityPlayer implements Entity {
 
 	private String name;
 	private float health;
+	private boolean dead;
+	private byte[][] metadata = new byte[32][32];
 	private static Vector2D position = new Vector2D(offsetX + Game.screenWidth / 2, offsetY + Game.screenHeight / 2);
 	private float walkSpeed = 0.1f;
 	private float jumpHeight;
@@ -81,6 +83,16 @@ public class EntityPlayer implements Entity {
 	@Override
 	public void draw() {
 		
+	}
+
+	@Override
+	public boolean getIsDead() {
+		return this.dead;
+	}
+
+	@Override
+	public byte[][] getMetadata() {
+		return this.metadata;
 	}
 
 }
