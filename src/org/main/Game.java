@@ -5,7 +5,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.player.KeyControls;
-import org.world.LevelData;
 import org.world.WorldRenderer;
 import org.world.WorldUpdater;
 import org.world.server.Generator;
