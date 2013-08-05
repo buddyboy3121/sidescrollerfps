@@ -19,7 +19,7 @@ public class Generator {
 			for (int y = 0; y < LevelData.levelHeight / 32; y++) {
 				int random = (int) (Math.random() * 3);
 				
-				if (y > (LevelData.levelHeight / 32) / 2) {
+				if (y > (LevelData.levelHeight / 32) / 2) {		//Checks if Y-Axis is greater than half the world.
 					generatedLevel[x][y] = new Tile(Tile.types.ROCK, x * 32, y * 32);
 				}
 				
