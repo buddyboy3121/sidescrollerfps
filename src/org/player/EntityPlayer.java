@@ -7,6 +7,8 @@ public class EntityPlayer implements Entity {
 	
 	public static float offsetX = 100;
 	public static float offsetY = 100;
+	public static float shiftX = Game.screenWidth / 2;
+	public static float shiftY = (Game.screenHeight / 2) + 100;
 
 	private String name;
 	private float health;

@@ -12,7 +12,7 @@ public class ItemGunWeapon extends ItemWeapon {
 
 	/**
 	 * Fire the gun.<br>
-	 * This automatically removes ammunation from the magazine.<br>
+	 * This automatically removes ammunition from the magazine.<br>
 	 * When there's no magazines left, an event will be thrown.
 	 */
 	public final void fire() {

@@ -19,7 +19,10 @@ public class WorldRenderer {
 		for (int x = offsetX / Tile.size; x < (offsetX + Game.screenWidth) / Tile.size; x++) {
 			
 			for (int y = offsetY / Tile.size; y < (offsetY + Game.screenHeight) / Tile.size; y++) {
-				level.getTileFromLevelArray(x, y).render(g);
+				if (level.getTileFromLevelArray(x, y) != null) {
+					level.getTileFromLevelArray(x, y).render(g);
+				}
+				
 			}
 		}
 	}
