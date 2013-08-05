@@ -10,16 +10,16 @@ public class Tile {
 
 	private Vector2D coordinates;
 	public static int size = 32;
-	public types type;
+	public Image tile;
 	
 	//Stores the original x and y positions.
 	private int originalX, originalY;
 	
-	public Tile(types typeOfTile, int x, int y) {
+	public Tile(Image tileImage, int x, int y) {
 		coordinates = new Vector2D(x, y);
-		type = typeOfTile;
 		originalX = x;
 		originalY = y;
+		tile = tileImage;
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class Tile {
 	 * @param g The graphics to use for drawing the image.
 	 */
 	public void render(Graphics g) {
-		g.drawImage(type.tileImage, coordinates.getX(), coordinates.getY());
+		g.drawImage(tile, coordinates.getX(), coordinates.getY());
 	}
 	
 	/**
@@ -42,25 +42,6 @@ public class Tile {
 	public void update() {
 		coordinates.setX(originalX - EntityPlayer.offsetX);
 		coordinates.setY(originalY - EntityPlayer.offsetY);
-	}
-	
-	public enum types {
-		DIRT("images/tiles/dirt.png"),	ROCK("images/tiles/rock.png"), STONE("images/tiles/stone.png"),
-		GRASS("images/tiles/grass.png");
-		
-		
-		public Image tileImage;
-		
-		private types(String path) {
-			System.out.println(path);
-			try {
-				
-				Image image = new Image("images/tiles/dirt.png");
-				tileImage = image;
-			}catch(SlickException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 	
 }
