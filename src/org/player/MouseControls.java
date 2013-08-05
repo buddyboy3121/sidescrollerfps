@@ -9,6 +9,8 @@ public class Testing extends JFrame implements MouseMotionListener{
     int my;
     int mx;
     
+    Mouse mouse = new Mouse;
+    
     @Override
     public void mouseDragged(MouseEvent e) {
        mx = e.getX();
