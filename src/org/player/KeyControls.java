@@ -22,7 +22,7 @@ public class KeyControls {
 			
 		}
 		
-		System.out.println(EntityPlayer.offsetX);
+		System.out.println(EntityPlayer.offsetX / 32);
 		
 		input.consumeEvent();
 	}
