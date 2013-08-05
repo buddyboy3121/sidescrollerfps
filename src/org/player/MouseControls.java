@@ -4,33 +4,29 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 
-public class Testing extends JFrame implements MouseMotionListener{
+import org.lwjgl.input.Mouse;
+
+public class MouseControls extends JFrame implements MouseMotionListener{
     
     int my;
     int mx;
     
-    Mouse mouse = new Mouse;
+    Mouse mouse;
     
     @Override
     public void mouseDragged(MouseEvent e) {
        mx = e.getX();
        my = e.getY();
-        mouseDragged = true;
-        
-        
-        e.consume();
+       e.consume();
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
        mx = e.getX();
        my = e.getY();
-        mouseDragged = false;
-       
-       
        e.consume();
     }
-
+}
 
 
 
