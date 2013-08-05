@@ -5,10 +5,4 @@ You will be able to build your own base, and then fight online or generated leve
 
 Ideas
 ================
-- In-game currency                                                      
-- Events                                                                
-- Can buy reskins and guns with in-game currency or real currency.                  
-- Competitions (can win new characters, special guns and skins, etc).            
-- Not a grinding game.
-- Earn money at end of round depending on score that round
-- Score is calculated by how many times you died, how many people you killed, how many tiles destroyed, etc.
+Moved to Issues
