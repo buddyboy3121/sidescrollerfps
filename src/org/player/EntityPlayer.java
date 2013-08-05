@@ -16,7 +16,10 @@ public class EntityPlayer implements Entity {
 	private float walkSpeed = 0.1f;
 	private float jumpHeight;
 	
-	public float pointPos;
+	private float v = mouse.getY();
+	private float w = mouse.getX();
+	
+	public float pointPos = v + w;
 	
 	@Override
 	public String getEntityId() {
