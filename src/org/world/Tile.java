@@ -45,14 +45,17 @@ public class Tile {
 	}
 	
 	public enum types {
-		ROCK("images/tiles/rock.png"), STONE("images/tiles/stone.png"), GRASS("images/tiles/grass.png");
+		DIRT("images/tiles/dirt.png"),	ROCK("images/tiles/rock.png"), STONE("images/tiles/stone.png"),
+		GRASS("images/tiles/grass.png");
+		
 		
 		public Image tileImage;
 		
 		private types(String path) {
+			System.out.println(path);
 			try {
 				
-				Image image = new Image("images/tiles/rock.png");
+				Image image = new Image("images/tiles/dirt.png");
 				tileImage = image;
 			}catch(SlickException e) {
 				e.printStackTrace();

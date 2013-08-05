@@ -5,7 +5,7 @@ import org.tools.Vector2D;
 
 public class EntityPlayer implements Entity {
 	
-	public static float offsetX = 100;
+	public static float offsetX = 487;
 	public static float offsetY = 100;
 	public static float shiftX = Game.screenWidth / 2;
 	public static float shiftY = (Game.screenHeight / 2) + 100;
@@ -18,10 +18,17 @@ public class EntityPlayer implements Entity {
 	private float walkSpeed = 0.1f;
 	private float jumpHeight;
 	
+<<<<<<< HEAD
 	// /private float v = mouse.getY();
 	// private float w = mouse.getX();
 	
 	// public float pointPos = v + w;
+=======
+	//private float v = mouse.getY();
+	//private float w = mouse.getX();
+	
+	//public float pointPos = v + w;
+>>>>>>> df44ec6e9da1a86ee37d471fb07d8932d4adec2c
 	
 	@Override
 	public String getEntityId() {
