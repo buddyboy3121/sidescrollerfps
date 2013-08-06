@@ -1,6 +1,8 @@
 package org.player;
 
 import org.main.Game;
+import org.newdawn.slick.Graphics;
+import org.physics.Physics;
 import org.tools.Vector2D;
 
 public class EntityPlayer implements Entity {
@@ -8,27 +10,26 @@ public class EntityPlayer implements Entity {
 	public static float offsetX = 487;
 	public static float offsetY = 100;
 	public static float shiftX = Game.screenWidth / 2;
-	public static float shiftY = (Game.screenHeight / 2) + 100;
+	public static float shiftY = Game.screenHeight / 2 + 13;
 
-	private String name;
-	private float health;
-	private boolean dead;
-	private byte[][] metadata = new byte[32][32];
-	private static Vector2D position = new Vector2D(offsetX + Game.screenWidth / 2, offsetY + Game.screenHeight / 2);
-	private float walkSpeed = 0.1f;
-	private float jumpHeight;
+	private static String name;
+	private static float health;
+	private static boolean dead;
+	private static byte[][] metadata = new byte[32][32];
+	private static Vector2D position = new Vector2D(offsetX + Game.screenWidth / 2, (offsetY + Game.screenHeight / 2) + 10);
+	private static float dx = 0.1f;
+	private static float dy = 0.22f;
 	
-<<<<<<< HEAD
-	// /private float v = mouse.getY();
+	public static boolean jumping = false;
+	
+	
+	// private float v = mouse.getY();
 	// private float w = mouse.getX();
 	
 	// public float pointPos = v + w;
-=======
 	//private float v = mouse.getY();
 	//private float w = mouse.getX();
 	
-	//public float pointPos = v + w;
->>>>>>> df44ec6e9da1a86ee37d471fb07d8932d4adec2c
 	
 	@Override
 	public String getEntityId() {
@@ -37,12 +38,12 @@ public class EntityPlayer implements Entity {
 
 	@Override
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	@Override
 	public float getHealth() {
-		return this.health;
+		return health;
 	}
 
 	@Override
@@ -51,30 +52,38 @@ public class EntityPlayer implements Entity {
 	}
 
 	@Override
-	public float getWalkSpeed() {
-		return this.walkSpeed;
+	public float getDX() {
+		return dx;
 	}
-
+	
 	@Override
-	public float getJumpHeight() {
-		return this.jumpHeight;
+	public float getDY() {
+		return dy;
+	}
+	
+	public void setJumping(boolean set) {
+		jumping = set;
 	}
 
 	@Override
 	public void left(int delta) {
-		position.addX(walkSpeed * -delta);
-		offsetX += walkSpeed * -delta;
+		position.addX(dx * -delta);
+		offsetX += dx * -delta;
 	}
 
 	@Override
 	public void right(int delta) {
-		position.addX(walkSpeed * delta);
-		offsetX += walkSpeed * delta;
+		position.addX(dx * delta);
+		offsetX += dx * delta;
 	}
 
 	@Override
-	public void up(int delta) {
-		
+	public void jump(int delta) {
+		if (jumping) {
+			dy -= Physics.gravity;
+			offsetY -= dy * delta;
+			position.addY(dy * delta);
+		}
 	}
 
 	@Override
@@ -93,18 +102,29 @@ public class EntityPlayer implements Entity {
 	}
 
 	@Override
-	public void draw() {
-		
+	public void draw(Graphics g) {
+		g.drawRect(shiftX, shiftY, 32, 64);
 	}
 
 	@Override
 	public boolean getIsDead() {
-		return this.dead;
+		return dead;
 	}
 
 	@Override
 	public byte[][] getMetadata() {
-		return this.metadata;
+		return metadata;
+	}
+
+	/**
+	 * Updates all the stuff that needs to be in a constant loop. {@link Game}
+	 * @param delta
+	 */
+	public void update(int delta) {
+		if (jumping) {
+			jump(delta);
+		}
+		
 	}
 
 }

@@ -3,6 +3,7 @@ package org.world;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 import org.player.EntityPlayer;
 import org.tools.Vector2D;
 
@@ -13,9 +14,9 @@ public class Tile {
 	public Image tile;
 	
 	//Stores the original x and y positions.
-	private int originalX, originalY;
+	private float originalX, originalY;
 	
-	public Tile(Image tileImage, int x, int y) {
+	public Tile(Image tileImage, float x, float y) {
 		coordinates = new Vector2D(x, y);
 		originalX = x;
 		originalY = y;
@@ -28,6 +29,16 @@ public class Tile {
 	 */
 	public void render(Graphics g) {
 		g.drawImage(tile, coordinates.getX(), coordinates.getY());
+	}
+	
+	/**
+	 * Returns if the player hits the block or not.
+	 * @param player
+	 * @return
+	 */
+	public boolean hit(int x, int y) {
+		return false;
+		//TODO 
 	}
 	
 	/**

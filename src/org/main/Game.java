@@ -4,6 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.player.EntityPlayer;
 import org.player.KeyControls;
 import org.world.WorldRenderer;
 import org.world.WorldUpdater;
@@ -18,6 +19,7 @@ public class Game extends BasicGameState {
 	private KeyControls keyControls;
 	private WorldRenderer worldRenderer;
 	private WorldUpdater worldUpdater;
+	private EntityPlayer player = new EntityPlayer();
 	
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		Generator generator = new Generator();
@@ -30,11 +32,13 @@ public class Game extends BasicGameState {
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		worldRenderer.render(g);
+		player.draw(g);
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		keyControls.update(game, delta);
 		worldUpdater.update();
+		player.update(delta);
 	}
 	
 	public int getID() {

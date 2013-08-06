@@ -1,5 +1,6 @@
 package org.player;
 
+import org.newdawn.slick.Graphics;
 import org.tools.Vector2D;
 
 public interface Entity {
@@ -42,16 +43,16 @@ public interface Entity {
 	public Vector2D getPosition();
 	
 	/**
-	 * The speed that the entity walks in.
-	 * @return the walk-speed.
+	 * The speed that the entity walks in X-Axis.
+	 * @return the walk-speed for X-Axis.
 	 */
-	public float getWalkSpeed();
+	public float getDX();
 	
 	/**
-	 * The jump-height of the entity.
-	 * @return the jump-height.
+	 * The speed that the entity walks in Y-Axis.
+	 * @return the walk-speed for Y-Axis.
 	 */
-	public float getJumpHeight();
+	public float getDY();
 	
 	/**
 	 * Go left with the entity.
@@ -66,7 +67,7 @@ public interface Entity {
 	/**
 	 * Go up with the entity.
 	 */
-	public void up(int delta);
+	public void jump(int delta);
 	
 	/**
 	 * Go down with the entity.
@@ -80,7 +81,8 @@ public interface Entity {
 	/**
 	 * Draw the entity to the world.
 	 */
-	public void draw();
+	public void draw(Graphics g);
+
 	
 }
 

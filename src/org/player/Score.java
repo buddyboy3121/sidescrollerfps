@@ -1,5 +1,5 @@
 package org.player;
-//imports here vvv
+//imports here
 
 
 public class Score{}

@@ -16,10 +16,11 @@ public class KeyControls {
 		
 		if (input.isKeyDown(Input.KEY_D)) {
 			player.right(delta);
-		}else if (input.isKeyDown(Input.KEY_A)) {
+		}
+		if (input.isKeyDown(Input.KEY_A)) {
 			player.left(delta);
-		}else if (input.isKeyDown(Input.KEY_SPACE)) {
-			
+		}if (input.isKeyDown(Input.KEY_SPACE)) {
+			player.setJumping(true);
 		}
 		
 		input.consumeEvent();
