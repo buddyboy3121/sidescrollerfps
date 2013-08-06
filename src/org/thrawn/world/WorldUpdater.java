@@ -6,6 +6,7 @@ import org.thrawn.player.EntityPlayer;
 public class WorldUpdater {
   
 	private LevelData level = new LevelData();
+	private EntityPlayer player = new EntityPlayer();
 
 	public void update() {
 		int offsetX = (int) EntityPlayer.offsetX;
@@ -17,6 +18,8 @@ public class WorldUpdater {
 				
 				if (level.getTileFromLevelArray(x, y) != null) {
 					level.getTileFromLevelArray(x, y).update();
+					
+					level.getTileFromLevelArray(x, y).hit(player.getPosition().getX(), player.getPosition().getY());
 				}
 			}
 		}
