@@ -9,6 +9,9 @@ import org.thrawn.tools.Vector2D;
  * Represents an entity that spawns automatically in the world.<br>
  * Use the constructor to set the values you want for the entity.
  */
+
+
+
 public class EntityPlayer implements Entity {
 	
 	public static float offsetX = 487;
@@ -20,7 +23,7 @@ public class EntityPlayer implements Entity {
 	private static float health;
 	private static boolean dead;
 	private static byte[][] metadata = new byte[32][32];
-	private static Vector2D position = new Vector2D(offsetX + Game.screenWidth / 2, (offsetY + Game.screenHeight / 2) + 10);
+	private static Vector2D position = new Vector2D(offsetX + (Game.screenWidth / 2), (offsetY + Game.screenHeight / 2));
 	private static float dx = 0.1f;
 	private static float dy = 0.22f;
 	
@@ -72,14 +75,14 @@ public class EntityPlayer implements Entity {
 
 	@Override
 	public void left(int delta) {
-		position.addX(dx * -delta);
 		offsetX += dx * -delta;
+		updatePosition();
 	}
 
 	@Override
 	public void right(int delta) {
-		position.addX(dx * delta);
 		offsetX += dx * delta;
+		updatePosition();
 	}
 
 	@Override
@@ -89,6 +92,11 @@ public class EntityPlayer implements Entity {
 			offsetY -= dy * delta;
 			position.addY(dy * delta);
 		}
+	}
+	
+	public void updatePosition() {
+		position.setX(offsetX + shiftX);
+		position.setY(offsetY - shiftY);
 	}
 
 	@Override
@@ -108,7 +116,7 @@ public class EntityPlayer implements Entity {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawRect(shiftX, shiftY, 32, 64);
+		g.drawRect(position.getX(), position.getY(), 32, 64);
 	}
 
 	@Override
@@ -134,7 +142,7 @@ public class EntityPlayer implements Entity {
 
 	@Override
 	public boolean isJumping() {
-		return this.jumping;
+		return jumping;
 	}
 
 }
