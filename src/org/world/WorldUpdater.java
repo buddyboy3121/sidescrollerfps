@@ -6,7 +6,6 @@ import org.player.EntityPlayer;
 public class WorldUpdater {
   
 	private LevelData level = new LevelData();
-	private EntityPlayer player = new EntityPlayer();
 
 	public void update() {
 		int offsetX = (int) EntityPlayer.offsetX;
