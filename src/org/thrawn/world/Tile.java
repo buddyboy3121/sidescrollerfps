@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 import org.thrawn.player.EntityPlayer;
 import org.thrawn.tools.Vector2D;
 
+
 public class Tile {
 
 	private Vector2D coordinates;
@@ -34,9 +35,16 @@ public class Tile {
 	 * @param player
 	 * @return
 	 */
-	public boolean hit(int x, int y) {
-		return false;
-		//TODO 
+	public boolean hit(float pX, float pY) {
+		float x = coordinates.getX();
+		float y = coordinates.getY();
+		
+		if (pX > x && pX < x + size && pY > y && pY < y + size) {
+			System.out.println("true");
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	/**
@@ -62,4 +70,3 @@ public class Tile {
 	}
 	
 }
-
