@@ -1,8 +1,12 @@
-package org.player;
+package org.thrawn.player;
 
 import org.newdawn.slick.Graphics;
-import org.tools.Vector2D;
+import org.thrawn.tools.Vector2D;
 
+/**
+ * Represents an interface used for creating entities.<br>
+ * This must be implemented for the spawning to work correctly.
+ */
 public interface Entity {
 	
 	/**
@@ -41,6 +45,18 @@ public interface Entity {
 	 * @return the position.
 	 */
 	public Vector2D getPosition();
+	
+	/**
+	 * Set the jump-state of the entity.
+	 * @param set the jump-state.
+	 */
+	public void setJumping(boolean set);
+	
+	/**
+	 * Returns whether the entity is jumping.
+	 * @return whether the entity is jumping.
+	 */
+	public boolean isJumping();
 	
 	/**
 	 * The speed that the entity walks in X-Axis.

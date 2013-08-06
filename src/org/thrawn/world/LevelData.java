@@ -1,4 +1,4 @@
-package org.world;
+package org.thrawn.world;
 
 public class LevelData {
 

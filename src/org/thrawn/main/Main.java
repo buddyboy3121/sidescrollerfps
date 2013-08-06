@@ -1,4 +1,4 @@
-package org.main;
+package org.thrawn.main;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.SlickException;

@@ -1,4 +1,4 @@
-package org.item;
+package org.thrawn.item;
 
 public class ItemGunWeapon extends ItemWeapon {
 

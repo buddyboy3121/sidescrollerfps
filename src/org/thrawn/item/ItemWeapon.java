@@ -1,6 +1,6 @@
-package org.item;
+package org.thrawn.item;
 
-import org.player.Entity;
+import org.thrawn.player.Entity;
 
 public class ItemWeapon implements Item {
 	

@@ -1,10 +1,14 @@
-package org.player;
+package org.thrawn.player;
 
-import org.main.Game;
 import org.newdawn.slick.Graphics;
-import org.physics.Physics;
-import org.tools.Vector2D;
+import org.thrawn.main.Game;
+import org.thrawn.physics.Physics;
+import org.thrawn.tools.Vector2D;
 
+/**
+ * Represents an entity that spawns automatically in the world.<br>
+ * Use the constructor to set the values you want for the entity.
+ */
 public class EntityPlayer implements Entity {
 	
 	public static float offsetX = 487;
@@ -61,6 +65,7 @@ public class EntityPlayer implements Entity {
 		return dy;
 	}
 	
+	@Override
 	public void setJumping(boolean set) {
 		jumping = set;
 	}
@@ -125,6 +130,11 @@ public class EntityPlayer implements Entity {
 			jump(delta);
 		}
 		
+	}
+
+	@Override
+	public boolean isJumping() {
+		return this.jumping;
 	}
 
 }

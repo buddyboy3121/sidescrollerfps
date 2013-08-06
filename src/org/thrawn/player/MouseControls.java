@@ -1,4 +1,4 @@
-package testing;
+package org.thrawn.player;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;

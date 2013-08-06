@@ -1,9 +1,9 @@
-package org.world;
+package org.thrawn.world;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.player.EntityPlayer;
-import org.tools.Vector2D;
+import org.thrawn.player.EntityPlayer;
+import org.thrawn.tools.Vector2D;
 
 public class Tile {
 
@@ -46,6 +46,14 @@ public class Tile {
 	 */
 	public void setLocation(int x, int y) {
 		coordinates.setBounds(x, y);
+	}
+	
+	/**
+	 * Returns the exact location of the Tile.
+	 * @return the location.
+	 */
+	public Vector2D getLocation() {
+		return this.coordinates;
 	}
 	
 	public void update() {

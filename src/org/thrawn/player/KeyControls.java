@@ -1,4 +1,4 @@
-package org.player;
+package org.thrawn.player;
 
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;

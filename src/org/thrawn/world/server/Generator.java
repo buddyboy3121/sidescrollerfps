@@ -1,9 +1,9 @@
-package org.world.server;
+package org.thrawn.world.server;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.world.LevelData;
-import org.world.Tile;
+import org.thrawn.world.LevelData;
+import org.thrawn.world.Tile;
 
 public class Generator {
 	
