@@ -1,22 +1,46 @@
 package org.thrawn.save;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.thrawn.world.LevelData;
+import org.thrawn.world.Tile;
 
 public class WorldData {
 	
-	@SuppressWarnings("null")
-	public void save(LevelData data, String fileName) {
+	public void save() throws IOException {
 		
-		byte[][][] world_data = null;
+		FileOutputStream output = new FileOutputStream("/Users/Nacorpio/Desktop/world.txt");
+		BufferedOutputStream buf_output = new BufferedOutputStream(output);
 		
-		for (int a = 0; a < data.getLevel().length; a++) {
-			for (int b = 0; b < data.getLevel()[a].length; b++) {
-				
-				world_data[a][b][0] = (byte) data.getLevel()[a][b].getLocation().getX();
-				world_data[a][b][1] = (byte) data.getLevel()[a][b].getLocation().getY();
-				
+		byte[][][] data = {};
+		
+		for (int i = 0; i < data.length; i++) {
+			for (int j = 0; j < data[i].length; j++) {
+				for (int k = 0; k < data[i][j].length; k++) {
+					
+					// Write the data to the file and then flush.
+					buf_output.write(data[i][j][k]);
+					buf_output.flush();
+					
+				}
 			}
 		}
+		
+		FileInputStream input = new FileInputStream("/Users/Nacorpio/Desktop/world.txt");
+		BufferedInputStream buf_input = new BufferedInputStream(input);
+		
+		for (int i = 0; i < buf_input.available(); i++) {
+			int buf = buf_input.read();
+			System.out.println(buf);
+		}
+		
+		buf_input.close();
+		buf_output.close();
 		
 	}
 	

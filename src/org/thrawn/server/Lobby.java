@@ -56,11 +56,6 @@ public class Lobby {
 			description = elements[5].split("\"")[1].split("\"")[0];
 			profile = new Profile(ip_address, account_name, first_name, last_name, description);
 			
-			connectedClients.add(new ConnectedPlayer(socket, id, ip_address, profile));
-			for (ConnectedPlayer player: connectedClients) {
-				System.out.println(" - " + player.getProfile() + " @ " + player.getIPAddress());
-			}
-			
 		}
 		
 	}
