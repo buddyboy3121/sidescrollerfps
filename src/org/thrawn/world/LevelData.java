@@ -1,5 +1,7 @@
 package org.thrawn.world;
 
+import org.thrawn.world.tiles.Tile;
+
 public class LevelData {
 
 	public static int levelWidth = 2000;

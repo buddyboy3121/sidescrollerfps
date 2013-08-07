@@ -3,7 +3,10 @@ package org.thrawn.world.server;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.thrawn.world.LevelData;
-import org.thrawn.world.Tile;
+import org.thrawn.world.tiles.Dirt;
+import org.thrawn.world.tiles.Grass;
+import org.thrawn.world.tiles.Rock;
+import org.thrawn.world.tiles.Tile;
 
 public class Generator {
 	
@@ -25,14 +28,14 @@ public class Generator {
 					int random = (int) (Math.random() * 50);
 					
 					if (random == 1) {
-						generatedLevel[x][y] = new Tile(new Image("images/tiles/rock.png"), x * 32, y * 32);
+						generatedLevel[x][y] = new Rock(x * 32, y * 32);
 					}else{
-						generatedLevel[x][y] = new Tile(new Image("images/tiles/dirt.png"), x * 32, y * 32);
+						generatedLevel[x][y] = new Dirt(x * 32, y * 32);
 					}
 				} else if (y > ((LevelData.levelHeight / 32) / 2) + 1) { //Checks if Y-Axis is greater than half the world + 1.
-					generatedLevel[x][y] = new Tile(new Image("images/tiles/dirt.png"), x * 32, y * 32);
+					generatedLevel[x][y] = new Dirt(x * 32, y * 32);
 				} else if (y > (LevelData.levelHeight / 32) / 2) {	//Checks if Y-Axis is greater than half the world.
-					generatedLevel[x][y] = new Tile(new Image("images/tiles/grass.png"), x * 32, y * 32);
+					generatedLevel[x][y] = new Grass(x * 32, y * 32);
 				}
 				
 			}

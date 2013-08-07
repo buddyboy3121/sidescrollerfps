@@ -6,8 +6,8 @@ import org.thrawn.main.Game;
 import org.thrawn.physics.Physics;
 import org.thrawn.tools.Vector2D;
 import org.thrawn.world.LevelData;
-import org.thrawn.world.Tile;
 import org.thrawn.world.WorldUpdater;
+import org.thrawn.world.tiles.Tile;
 
 /**
  * Represents an entity that spawns automatically in the world.<br>
@@ -21,7 +21,7 @@ public class EntityPlayer implements Entity {
 	public static float offsetX = 487;
 	public static float offsetY = 100;
 	public static float shiftX = Game.screenWidth / 2;
-	public static float shiftY = (Game.screenHeight / 2) - 64;
+	public static float shiftY = (Game.screenHeight / 2) + 17;
 
 	private static String name;
 	private static int health;

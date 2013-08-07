@@ -1,7 +1,8 @@
-package org.thrawn.world;
+package org.thrawn.world.tiles;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.thrawn.player.EntityPlayer;
 import org.thrawn.tools.Vector2D;
@@ -16,11 +17,11 @@ public class Tile {
 	//Stores the original x and y positions.
 	private float originalX, originalY;
 	
-	public Tile(Image tileImage, float x, float y) {
+	public Tile(String tileImage, float x, float y) throws SlickException {
 		coordinates = new Rectangle(x, y, size, size);
 		originalX = x;
 		originalY = y;
-		tile = tileImage;
+		tile = new Image(tileImage);
 	}
 	
 	/**

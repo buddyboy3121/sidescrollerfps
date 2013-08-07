@@ -3,6 +3,7 @@ package org.thrawn.world;
 import org.newdawn.slick.Graphics;
 import org.thrawn.main.Game;
 import org.thrawn.player.EntityPlayer;
+import org.thrawn.world.tiles.Tile;
 
 public class WorldRenderer {
 	
