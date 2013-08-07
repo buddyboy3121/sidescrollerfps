@@ -1,9 +1,13 @@
 package org.thrawn.player;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Rectangle;
 import org.thrawn.main.Game;
 import org.thrawn.physics.Physics;
 import org.thrawn.tools.Vector2D;
+import org.thrawn.world.LevelData;
+import org.thrawn.world.Tile;
+import org.thrawn.world.WorldUpdater;
 
 /**
  * Represents an entity that spawns automatically in the world.<br>
@@ -17,17 +21,20 @@ public class EntityPlayer implements Entity {
 	public static float offsetX = 487;
 	public static float offsetY = 100;
 	public static float shiftX = Game.screenWidth / 2;
-	public static float shiftY = Game.screenHeight / 2 + 13;
+	public static float shiftY = (Game.screenHeight / 2) - 64;
 
 	private static String name;
-	private static float health;
+	private static int health;
 	private static boolean dead;
 	private static byte[][] metadata = new byte[32][32];
-	private static Vector2D position = new Vector2D(offsetX + (Game.screenWidth / 2), (offsetY + Game.screenHeight / 2));
+	private static Rectangle position = new Rectangle(offsetX + shiftX, offsetY + shiftY, 32, 64);
 	private static float dx = 0.1f;
-	private static float dy = 0.22f;
+	private static float dy = 0.2f;
+	
+	private LevelData level = new LevelData();
 	
 	public static boolean jumping = false;
+	public static boolean onTile = false;
 	
 	
 	// private float v = mouse.getY();
@@ -54,7 +61,7 @@ public class EntityPlayer implements Entity {
 	}
 
 	@Override
-	public Vector2D getPosition() {
+	public Rectangle getPosition() {
 		return position;
 	}
 
@@ -75,14 +82,16 @@ public class EntityPlayer implements Entity {
 
 	@Override
 	public void left(int delta) {
-		offsetX += dx * -delta;
+		offsetX -= dx * delta;
 		updatePosition();
+		hitTile();
 	}
 
 	@Override
 	public void right(int delta) {
 		offsetX += dx * delta;
 		updatePosition();
+		hitTile();
 	}
 
 	@Override
@@ -90,13 +99,34 @@ public class EntityPlayer implements Entity {
 		if (jumping) {
 			dy -= Physics.gravity;
 			offsetY -= dy * delta;
-			position.addY(dy * delta);
+			updatePosition();
 		}
 	}
 	
 	public void updatePosition() {
 		position.setX(offsetX + shiftX);
-		position.setY(offsetY - shiftY);
+		position.setY(offsetY + shiftY);
+	}
+	
+	public boolean hitTile() {
+		for (int x = (int) (offsetX / Tile.size); x < (offsetX + Game.screenWidth) / Tile.size; x++) {
+			
+			for (int y = (int) (offsetY / Tile.size); y < (offsetY + Game.screenHeight) / Tile.size; y++) {
+				
+				if (level.getTileFromLevelArray(x, y) != null) {
+					
+					if (level.getTileFromLevelArray(x, y).hit(position)) {
+						onTile = true;
+						System.out.println("hit");
+						return true;
+						
+					}
+				}
+			}
+		}
+		
+		onTile = false;
+		return false;
 	}
 
 	@Override
@@ -116,7 +146,7 @@ public class EntityPlayer implements Entity {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawRect(position.getX(), position.getY(), 32, 64);
+		g.drawRect(shiftX, shiftY, 30, 60);
 	}
 
 	@Override
@@ -134,6 +164,7 @@ public class EntityPlayer implements Entity {
 	 * @param delta
 	 */
 	public void update(int delta) {
+		
 		if (jumping) {
 			jump(delta);
 		}

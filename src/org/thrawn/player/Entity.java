@@ -1,6 +1,7 @@
 package org.thrawn.player;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Rectangle;
 import org.thrawn.tools.Vector2D;
 
 /**
@@ -44,7 +45,7 @@ public interface Entity {
 	 * The position of the entity.
 	 * @return the position.
 	 */
-	public Vector2D getPosition();
+	public Rectangle getPosition();
 	
 	/**
 	 * Set the jump-state of the entity.

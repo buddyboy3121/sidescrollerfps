@@ -4,6 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.thrawn.main.information.Infomation;
 import org.thrawn.player.EntityPlayer;
 import org.thrawn.player.KeyControls;
 import org.thrawn.world.WorldRenderer;
@@ -19,6 +20,7 @@ public class Game extends BasicGameState {
 	private KeyControls keyControls;
 	private WorldRenderer worldRenderer;
 	private WorldUpdater worldUpdater;
+	private Infomation info;
 	private EntityPlayer player = new EntityPlayer();
 	
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
@@ -26,6 +28,7 @@ public class Game extends BasicGameState {
 		keyControls = new KeyControls();
 		worldRenderer = new WorldRenderer();
 		worldUpdater = new WorldUpdater();
+		info = new Infomation();
 		
 		generator.generateLevel();
 	}
@@ -33,6 +36,7 @@ public class Game extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
 		worldRenderer.render(g);
 		player.draw(g);
+		info.render(g);
 	}
 
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {

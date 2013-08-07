@@ -2,13 +2,14 @@ package org.thrawn.world;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Rectangle;
 import org.thrawn.player.EntityPlayer;
 import org.thrawn.tools.Vector2D;
 
 
 public class Tile {
 
-	private Vector2D coordinates;
+	private Rectangle coordinates;
 	public static int size = 32;
 	public Image tile;
 	
@@ -16,7 +17,7 @@ public class Tile {
 	private float originalX, originalY;
 	
 	public Tile(Image tileImage, float x, float y) {
-		coordinates = new Vector2D(x, y);
+		coordinates = new Rectangle(x, y, size, size);
 		originalX = x;
 		originalY = y;
 		tile = tileImage;
@@ -28,6 +29,7 @@ public class Tile {
 	 */
 	public void render(Graphics g) {
 		g.drawImage(tile, coordinates.getX(), coordinates.getY());
+		g.drawRect(coordinates.getX(), coordinates.getY(), size, size);
 	}
 	
 	/**
@@ -35,12 +37,8 @@ public class Tile {
 	 * @param player
 	 * @return
 	 */
-	public boolean hit(float pX, float pY) {
-		float x = coordinates.getX();
-		float y = coordinates.getY();
-		
-		if (pX > x && pX < x + size && pY > y && pY < y + size) {
-			System.out.println("true");
+	public boolean hit(Rectangle player) {
+		if (player.intersects(coordinates)) {
 			return true;
 		}else{
 			return false;
@@ -53,14 +51,14 @@ public class Tile {
 	 * @param y The Y-coordinate.
 	 */
 	public void setLocation(int x, int y) {
-		coordinates.setBounds(x, y);
+		coordinates.setBounds(x, y, size, size);
 	}
 	
 	/**
 	 * Returns the exact location of the Tile.
 	 * @return the location.
 	 */
-	public Vector2D getLocation() {
+	public Rectangle getLocation() {
 		return this.coordinates;
 	}
 	
