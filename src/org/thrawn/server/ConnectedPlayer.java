@@ -40,6 +40,22 @@ public class ConnectedPlayer {
 	}
 	
 	/**
+	 * Returns the profile of the player.
+	 * @return the profile.
+	 */
+	public Profile getProfile() {
+		return this.profile;
+	}
+	
+	/**
+	 * Returns the IP address of the player.
+	 * @return the IP address.
+	 */
+	public String getIPAddress() {
+		return this.ip_address;
+	}
+	
+	/**
 	 * Returns the DataInputStream of the Connected Player.
 	 * @return the DataInputStream.
 	 * @throws IOException

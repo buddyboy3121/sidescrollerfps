@@ -30,24 +30,14 @@ public class PlayerClient implements Runnable {
 			
 			ip_address = socket.getInetAddress().getHostAddress();
 			
-			output.writeUTF("{" + ip_address + "#" + id + "}?{PROFILE: " + profile.getAccountName() + ", " + profile.getFirstName() + ", " + profile.getLastName() + ", " + profile.getDescription() + "}");
-			output.flush();
+			output.writeUTF(ip_address + "#" +
+			                id + "#" +
+					        profile.getAccountName() + "#" +
+			                profile.getFirstName() + "#" +
+					        profile.getLastName() + "#\"" +
+			                profile.getDescription() + "\"");
 			
-			while (true) {	
-				if (input.hasNext()) {
-					
-					// Check for chat-messages and broadcasts.
-					String cmd = input.nextLine();
-					
-					if (cmd.startsWith("{#CHAT:")) {
-						
-						String message = cmd.split("\\{")[1].split("\\}")[0].split(":")[1];
-						System.out.println(message);
-						
-					}
-					
-				}		
-			}
+			output.flush();
 			
 		} catch (Exception e) {
 			

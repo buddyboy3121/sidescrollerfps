@@ -3,16 +3,17 @@ package org.thrawn.server;
 public class Profile {
 
 	private String accountName;
-	
+	private String ip_address;
 	private String firstName;
 	private String lastName;
 	private String description;
 	
-	public Profile(String accountName, String firstName, String lastName, String desc) {
+	public Profile(String ip_address, String accountName, String firstName, String lastName, String desc) {
 		this.accountName = accountName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = desc;
+		this.ip_address = ip_address;
 	}
 	
 	/**
@@ -21,6 +22,14 @@ public class Profile {
 	 */
 	public String getAccountName() {
 		return accountName;
+	}
+	
+	/**
+	 * Returns the IP address of the registered account.
+	 * @return the IP address.
+	 */
+	public String getIPAddress() {
+		return ip_address;
 	}
 	
 	/**
