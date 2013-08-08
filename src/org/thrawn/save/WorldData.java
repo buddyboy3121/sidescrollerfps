@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.thrawn.world.LevelData;
-import org.thrawn.world.Tile;
 
 public class WorldData {
 	

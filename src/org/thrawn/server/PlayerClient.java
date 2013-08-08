@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.thrawn.format.CommandFormat;
+
 public class PlayerClient implements Runnable {
 
 	private static Scanner input;
@@ -30,12 +32,7 @@ public class PlayerClient implements Runnable {
 			
 			ip_address = socket.getInetAddress().getHostAddress();
 			
-			output.writeUTF(ip_address + "#" +
-			                id + "#" +
-					        profile.getAccountName() + "#" +
-			                profile.getFirstName() + "#" +
-					        profile.getLastName() + "#\"" +
-			                profile.getDescription() + "\"");
+			output.writeUTF(CommandFormat.getConnectionString(profile));
 			
 			output.flush();
 			

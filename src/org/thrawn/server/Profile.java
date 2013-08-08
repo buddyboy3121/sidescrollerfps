@@ -1,19 +1,21 @@
 package org.thrawn.server;
 
+import java.net.Socket;
+
 public class Profile {
 
 	private String accountName;
-	private String ip_address;
 	private String firstName;
 	private String lastName;
 	private String description;
+	private Socket socket;
 	
-	public Profile(String ip_address, String accountName, String firstName, String lastName, String desc) {
+	public Profile(Socket socket, String accountName, String firstName, String lastName, String desc) {
 		this.accountName = accountName;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.description = desc;
-		this.ip_address = ip_address;
+		this.socket = socket;
 	}
 	
 	/**
@@ -29,7 +31,15 @@ public class Profile {
 	 * @return the IP address.
 	 */
 	public String getIPAddress() {
-		return ip_address;
+		return socket.getInetAddress().getHostAddress();
+	}
+	
+	public Socket getSocket() {
+		return socket;
+	}
+	
+	public boolean isOnline() {
+		return socket.isConnected();
 	}
 	
 	/**

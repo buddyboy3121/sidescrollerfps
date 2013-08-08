@@ -15,7 +15,7 @@ public class ClientTest {
 		// DataOutputStream output = new DataOutputStream(s.getOutputStream());
 		// DataInputStream input = new DataInputStream(s.getInputStream());
 		
-		PlayerClient player = new PlayerClient(new Profile(s.getInetAddress().getHostAddress(), "Nacorpio", "Gustav", "Jeppsson", "My name is Gustav Jeppsson."), s);
+		PlayerClient player = new PlayerClient(new Profile(s, "Nacorpio", "Gustav", "Jeppsson", "My name is Gustav Jeppsson."), s);
 		
 		Thread thread = new Thread(player);
 		thread.start();

@@ -3,20 +3,21 @@ package org.thrawn.server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ConnectedPlayer {
 
-	private String ip_address;
 	private int id;
 	private Profile profile;
 	private Socket player;
+	private ServerSocket server;
 	
-	public ConnectedPlayer(Socket player, int id, String ip_address, Profile profile) {
+	public ConnectedPlayer(ServerSocket server, Socket player, int id, Profile profile) {
 		this.player = player;
 		this.id = id;
-		this.ip_address = ip_address;
 		this.profile = profile;
+		this.server = server;
 	}
 	
 	/**
@@ -32,7 +33,16 @@ public class ConnectedPlayer {
 	}
 	
 	/**
-	 * Returns if the Player is still connected.
+	 * Returns the server the client is connected to.<br>
+	 * Returns <b>null</b> if connected to no server.
+	 * @return the server.
+	 */
+	public ServerSocket getServer() {
+		return this.server;
+	}
+	
+	/**
+	 * Returns if the Player is still connected.<br>
 	 * @return the connection-status.
 	 */
 	public boolean isConnected() {
@@ -52,7 +62,7 @@ public class ConnectedPlayer {
 	 * @return the IP address.
 	 */
 	public String getIPAddress() {
-		return this.ip_address;
+		return player.getInetAddress().getHostAddress();
 	}
 	
 	/**

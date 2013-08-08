@@ -10,6 +10,8 @@ import org.thrawn.tools.Vector2D;
 
 public class Tile {
 
+	private byte[] metadata;
+	
 	private Rectangle coordinates;
 	public static int size = 32;
 	public Image tile;
@@ -63,6 +65,18 @@ public class Tile {
 		return this.coordinates;
 	}
 	
+	public byte[] getMetadata() {
+		return metadata;
+	}
+	
+	public byte getMetadata(int index) {
+		return metadata[index];
+	}
+	
+	public void setMetadata(int index, byte data) {
+		metadata[index] = data;
+	}
+		
 	public void update() {
 		coordinates.setX(originalX - EntityPlayer.offsetX);
 		coordinates.setY(originalY - EntityPlayer.offsetY);
