@@ -18,6 +18,9 @@ public class Lobby {
 	private List<String> operators = new ArrayList<String>();
 	private String welcomeMessage = "Welcome to this Lobby, ($p).";
 	private List<ConnectedPlayer> connectedClients = new ArrayList<ConnectedPlayer>();
+
+	private DataInputStream sinput;
+	private PrintWriter soutput;
 	
 	private ServerSocket server;
 	private Socket serverSocket;
@@ -32,13 +35,13 @@ public class Lobby {
 		this.serverSocket = new Socket(host, port);
 		this.server.accept();
 		
-		System.out.println("Started the lobby @ " + port);	
-		
 		lobbyListener = new LobbyListener(this);
 		commandListener = new CommandListener(this);
 		
 		new Thread(lobbyListener).start();
 		new Thread(commandListener).start();
+		
+		System.out.println(CommandFormat.getCommand(new String[]{"LOBBY"}, new String[]{"Initialized"}));
 		
 	}
 	
@@ -67,11 +70,20 @@ public class Lobby {
 				while (true) {
 					
 					String line = cmdInput.readUTF();
+					String[] values = CommandFormat.getTargetValues(line);
 					String resp = CommandFormat.getResponsible(line);
 					
 					if (line.equals(CommandFormat.getCloseString(resp))) {
 						this.lobby.getServer().close();
 						this.lobby.getSocket().close();
+					} else if (line.equals(CommandFormat.getKickString(resp, values[0], values[1]))) {
+						// Kick a Player.
+					} else if (line.equals(CommandFormat.getBanString(resp, values[0], values[1]))) {
+						// Ban a Player.
+					} else if (line.equals(CommandFormat.getBroadcastString(resp, values[0]))) {
+						for (ConnectedPlayer player: lobby.getConnectedClients()) {
+							// Write the data to all the players.
+						}
 					}
 					
 				}
@@ -100,14 +112,14 @@ public class Lobby {
 		@Override
 		public void run() {
 			
-			DataInputStream sinput;
-			PrintWriter soutput;
+			System.out.println(CommandFormat.getCommand(new String[]{"LOBBY", "LISTENER"}, new String[]{"Initialized"}));
 			
 			while (true) {
 				try {
 					
 					Socket clientSocket;
 					clientSocket = lobby.server.accept();
+					
 					System.out.println(" - " + CommandFormat.getLogClientAccepted(clientSocket.getInetAddress().getHostAddress()));
 					
 					sinput = new DataInputStream(clientSocket.getInputStream());
@@ -133,8 +145,10 @@ public class Lobby {
 						description = elements[4];
 						
 						profile = new Profile(clientSocket, account_name, first_name, last_name, description);				
-						lobby.getConnectedClients().add(new ConnectedPlayer(lobby.getServer(), clientSocket, id, profile));
+						lobby.getConnectedClients().add(new ConnectedPlayer(new PlayerClient(profile, clientSocket), lobby, clientSocket, id, profile));
 						System.out.println(" - " + CommandFormat.getLogProfileParsed(profile, clientSocket.getInetAddress().getHostAddress()) + "\n");
+						
+						// lobby.getConnectedClients().get(0).sendMessage("admin", "Hello there!");
 						
 					}
 					
@@ -147,61 +161,6 @@ public class Lobby {
 		}
 		
 	}
-	
-	/*public static void main(String[] args) throws IOException {	
-		
-		server = new ServerSocket(27373);
-		//serverSocket = new Socket(server.getInetAddress().getHostAddress(), 27373);
-		
-		//serverInput = new DataInputStream(serverSocket.getInputStream());
-		//serverOutput = new PrintWriter(serverSocket.getOutputStream());
-		
-		Socket socket;
-		
-		// Starts a server at the local network for now.
-		System.out.println("Started the lobby @ 27373");
-		
-		while (true) {
-			
-			// listener();
-			
-			// The player is accepted into the lobby.
-			socket = server.accept();
-			System.out.println(" - " + CommandFormat.getLogClientAccepted(socket.getInetAddress().getHostAddress()));
-			
-			// Initialize the streams to read and write data to the new Player.
-			input = new DataInputStream(socket.getInputStream());
-			output = new PrintWriter(socket.getOutputStream());
-
-			String src_one = input.readUTF();
-			if (socket.isConnected()) {
-				
-				System.out.println(" - " + CommandFormat.getLogClientConnected(socket.getInetAddress().getHostAddress()));
-				
-				int id;
-				String account_name;
-				String first_name;
-				String last_name;
-				String description;
-				Profile profile;
-				
-				String[] elements = CommandFormat.getValues(src_one);
-				id = new Random(System.currentTimeMillis()).nextInt(1000);
-				account_name = elements[0];
-				first_name = elements[1];
-				last_name = elements[2];
-				description = elements[4];	
-				
-				profile = new Profile(socket, account_name, first_name, last_name, description);
-				
-				connectedClients.add(new ConnectedPlayer(server, socket, id, profile));			
-				System.out.println(" - " + CommandFormat.getLogProfileParsed(profile, socket.getInetAddress().getHostAddress()) + "\n");
-				
-			}
-		
-		}
-		
-	}*/
 	
 	public final void setWelcomeMessage(String arg1) {
 		welcomeMessage = arg1;
@@ -231,6 +190,14 @@ public class Lobby {
 	
 	public final Socket getSocket() {
 		return this.serverSocket;
+	}
+	
+	public final DataInputStream getLastPlayerInput() {
+		return this.sinput;
+	}
+	
+	public final PrintWriter getLastPlayerOutput() {
+		return this.soutput;
 	}
 	
 	public final ServerSocket getServer() {
