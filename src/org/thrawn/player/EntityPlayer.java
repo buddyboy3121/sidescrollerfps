@@ -1,6 +1,8 @@
 package org.thrawn.player;
 
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
 import org.thrawn.main.Game;
 import org.thrawn.physics.Physics;
@@ -17,7 +19,7 @@ import org.thrawn.world.tiles.Tile;
 public class EntityPlayer implements Entity {
 	
 	public static float offsetX = 487;
-	public static float offsetY = 100;
+	public static float offsetY = 50;
 	public static float shiftX = Game.screenWidth / 2;
 	public static float shiftY = (Game.screenHeight / 2) + 14;
 
@@ -34,13 +36,9 @@ public class EntityPlayer implements Entity {
 	public static boolean jumping = false;
 	public static boolean onTile = false;
 	
-	
-	// private float v = mouse.getY();
-	// private float w = mouse.getX();
-	
-	// public float pointPos = v + w;
-	//private float v = mouse.getY();
-	//private float w = mouse.getX();
+	private float v = Mouse.getY();
+	private float w = Mouse.getX();
+	public Point mousePoint = new Point(v, w);
 	
 	
 	@Override
@@ -91,6 +89,19 @@ public class EntityPlayer implements Entity {
 		updatePosition();
 		hitTile();
 	}
+	
+	public void falling(int delta) {
+		
+		if (!hitTile() && jumping == false) {
+			dy = -Physics.fallSpeed;
+			offsetY -= dy * delta;
+		}
+		
+		if (hitTile()) {
+			jumping = false;
+			dy = 0.2f;
+		}
+	}
 
 	@Override
 	public void jump(int delta) {
@@ -98,13 +109,8 @@ public class EntityPlayer implements Entity {
 			dy -= Physics.gravity;
 			offsetY -= dy * delta;
 			updatePosition();
-			
-			//If you hit a tile going down, stop jumping.
-			if (hitTile() && dy < 0) {
-				jumping = false;
-				dy = 0.2f;
-			}
 		}
+		
 	}
 	
 	public void updatePosition() {
@@ -167,10 +173,13 @@ public class EntityPlayer implements Entity {
 	 * @param delta
 	 */
 	public void update(int delta) {
+		updatePosition();
 		
 		if (jumping) {
 			jump(delta);
 		}
+		
+		falling(delta);
 		
 	}
 

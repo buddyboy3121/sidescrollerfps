@@ -11,7 +11,7 @@ public class Infomation {
 	 */
 	
 	public void render(Graphics g) {
-		g.drawString(String.format("ShiftX: %f\nShiftY: %f\nHit Tile: %b", EntityPlayer.shiftX,
-				EntityPlayer.shiftY, EntityPlayer.onTile), 600, 10);
+		g.drawString(String.format("ShiftX: %f\nShiftY: %f\nHit Tile: %b\nJumping: %b\nOffsetX: %f\nOffsetY: %f", EntityPlayer.shiftX,
+				EntityPlayer.shiftY, EntityPlayer.onTile, EntityPlayer.jumping, EntityPlayer.offsetX, EntityPlayer.offsetY), 600, 10);
 	}
 }
