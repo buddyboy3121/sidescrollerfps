@@ -3,6 +3,8 @@ package org.thrawn.server;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,10 +19,7 @@ public class Lobby {
 	
 	private List<String> operators = new ArrayList<String>();
 	private String welcomeMessage = "Welcome to this Lobby, ($p).";
-	private List<ConnectedPlayer> connectedClients = new ArrayList<ConnectedPlayer>();
-
-	private DataInputStream sinput;
-	private PrintWriter soutput;
+	private List<Client> connectedClients = new ArrayList<Client>();
 	
 	private ServerSocket server;
 	private Socket serverSocket;
@@ -32,6 +31,7 @@ public class Lobby {
 		
 		// Initialize the Lobby/Server.
 		this.server = new ServerSocket(port);
+		
 		this.serverSocket = new Socket(host, port);
 		this.server.accept();
 		
@@ -48,9 +48,19 @@ public class Lobby {
 	private class CommandListener implements Runnable {
 
 		private Lobby lobby;
+		private DataInputStream input;
+		private DataOutputStream output;
 		
 		public CommandListener(Lobby lobby) {
 			this.lobby = lobby;
+		}
+		
+		public DataInputStream getInput() {
+			return this.input;
+		}
+		
+		public DataOutputStream getOutput() {
+			return this.output;
 		}
 		
 		public Lobby getLobby() {
@@ -60,16 +70,16 @@ public class Lobby {
 		@Override
 		public void run() {
 			
-			DataInputStream cmdInput;
 			System.out.println(CommandFormat.getCommandListenerString("Initialized"));
 			
 			try {
 				
-				cmdInput = new DataInputStream(lobby.getSocket().getInputStream());
+				input = new DataInputStream(lobby.getSocket().getInputStream());
+				output = new DataOutputStream(lobby.getSocket().getOutputStream());
 				
 				while (true) {
 					
-					String line = cmdInput.readUTF();
+					String line = input.readUTF();
 					String[] values = CommandFormat.getTargetValues(line);
 					String resp = CommandFormat.getResponsible(line);
 					
@@ -81,9 +91,7 @@ public class Lobby {
 					} else if (line.equals(CommandFormat.getBanString(resp, values[0], values[1]))) {
 						// Ban a Player.
 					} else if (line.equals(CommandFormat.getBroadcastString(resp, values[0]))) {
-						for (ConnectedPlayer player: lobby.getConnectedClients()) {
-							// Write the data to all the players.
-						}
+						
 					}
 					
 				}
@@ -114,48 +122,23 @@ public class Lobby {
 			
 			System.out.println(CommandFormat.getCommand(new String[]{"LOBBY", "LISTENER"}, new String[]{"Initialized"}));
 			
-			while (true) {
+			while (true) {		
 				try {
 					
+					ObjectInputStream inputStream = new ObjectInputStream(serverSocket.getInputStream());
+					ObjectOutputStream outputStream = new ObjectOutputStream(serverSocket.getOutputStream());
+					
 					Socket clientSocket;
-					clientSocket = lobby.server.accept();
+					clientSocket = lobby.server.accept();				
 					
-					System.out.println(" - " + CommandFormat.getLogClientAccepted(clientSocket.getInetAddress().getHostAddress()));
+					Profile profile;
 					
-					sinput = new DataInputStream(clientSocket.getInputStream());
-					soutput = new PrintWriter(clientSocket.getOutputStream());
 					
-					String sout = sinput.readUTF();
-					if (clientSocket.isConnected()) {
-						
-						System.out.println(" - " + CommandFormat.getLogClientConnected(clientSocket.getInetAddress().getHostAddress()));
-						
-						int id;
-						String account_name;
-						String first_name;
-						String last_name;
-						String description;
-						Profile profile;
-						
-						String[] elements = CommandFormat.getValues(sout);
-						id = new Random(System.currentTimeMillis()).nextInt(1000);
-						account_name = elements[0];
-						first_name = elements[1];
-						last_name = elements[2];
-						description = elements[4];
-						
-						profile = new Profile(clientSocket, account_name, first_name, last_name, description);				
-						lobby.getConnectedClients().add(new ConnectedPlayer(new PlayerClient(profile, clientSocket), lobby, clientSocket, id, profile));
-						System.out.println(" - " + CommandFormat.getLogProfileParsed(profile, clientSocket.getInetAddress().getHostAddress()) + "\n");
-						
-						// lobby.getConnectedClients().get(0).sendMessage("admin", "Hello there!");
-						
-					}
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}	
+				}
 			}
 			
 		}
@@ -164,6 +147,13 @@ public class Lobby {
 	
 	public final void setWelcomeMessage(String arg1) {
 		welcomeMessage = arg1;
+	}
+	
+	public void sendCommand(String cmd) throws IOException {
+		if (cmd != "") {
+			commandListener.getOutput().writeUTF(cmd);
+			commandListener.getOutput().flush();
+		}
 	}
 	
 	/**
@@ -184,22 +174,14 @@ public class Lobby {
 		}
 	}
 	
-	public final List<ConnectedPlayer> getConnectedClients() {
+	public final List<Client> getConnectedClients() {
 		return this.connectedClients;
 	}
 	
 	public final Socket getSocket() {
 		return this.serverSocket;
 	}
-	
-	public final DataInputStream getLastPlayerInput() {
-		return this.sinput;
-	}
-	
-	public final PrintWriter getLastPlayerOutput() {
-		return this.soutput;
-	}
-	
+
 	public final ServerSocket getServer() {
 		return this.server;
 	}
