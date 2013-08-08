@@ -11,23 +11,144 @@ import java.util.List;
 import java.util.Random;
 
 import org.thrawn.format.CommandFormat;
+import org.thrawn.format.LogType;
 
-public abstract class Lobby {
+public class Lobby {
 	
-	private static List<String> operators = new ArrayList<String>();
-	private static String welcomeMessage = "Welcome to this Lobby, ($p).";
-	private static List<ConnectedPlayer> connectedClients = new ArrayList<ConnectedPlayer>();
+	private List<String> operators = new ArrayList<String>();
+	private String welcomeMessage = "Welcome to this Lobby, ($p).";
+	private List<ConnectedPlayer> connectedClients = new ArrayList<ConnectedPlayer>();
 	
-	private static ServerSocket server;
-	private static Socket serverSocket;
+	private ServerSocket server;
+	private Socket serverSocket;
 	
-	private static DataInputStream serverInput;
-	private static PrintWriter serverOutput;
+	private LobbyListener lobbyListener;
+	private CommandListener commandListener;
 	
-	private static DataInputStream input;
-	private static PrintWriter output;
+	public Lobby(String host, int port) throws IOException {
+		
+		// Initialize the Lobby/Server.
+		this.server = new ServerSocket(port);
+		this.serverSocket = new Socket(host, port);
+		this.server.accept();
+		
+		System.out.println("Started the lobby @ " + port);	
+		
+		lobbyListener = new LobbyListener(this);
+		commandListener = new CommandListener(this);
+		
+		new Thread(lobbyListener).start();
+		new Thread(commandListener).start();
+		
+	}
 	
-	public static void main(String[] args) throws IOException {	
+	private class CommandListener implements Runnable {
+
+		private Lobby lobby;
+		
+		public CommandListener(Lobby lobby) {
+			this.lobby = lobby;
+		}
+		
+		public Lobby getLobby() {
+			return this.lobby;
+		}
+		
+		@Override
+		public void run() {
+			
+			DataInputStream cmdInput;
+			System.out.println(CommandFormat.getCommandListenerString("Initialized"));
+			
+			try {
+				
+				cmdInput = new DataInputStream(lobby.getSocket().getInputStream());
+				
+				while (true) {
+					
+					String line = cmdInput.readUTF();
+					String resp = CommandFormat.getResponsible(line);
+					
+					if (line.equals(CommandFormat.getCloseString(resp))) {
+						this.lobby.getServer().close();
+						this.lobby.getSocket().close();
+					}
+					
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+			}
+	
+		}
+		
+	}
+	
+	private class LobbyListener implements Runnable {
+
+		private Lobby lobby;
+		
+		public LobbyListener(Lobby lobby) {
+			this.lobby = lobby;
+		}
+		
+		public final Lobby getLobby() {
+			return this.lobby;
+		}
+		
+		@Override
+		public void run() {
+			
+			DataInputStream sinput;
+			PrintWriter soutput;
+			
+			while (true) {
+				try {
+					
+					Socket clientSocket;
+					clientSocket = lobby.server.accept();
+					System.out.println(" - " + CommandFormat.getLogClientAccepted(clientSocket.getInetAddress().getHostAddress()));
+					
+					sinput = new DataInputStream(clientSocket.getInputStream());
+					soutput = new PrintWriter(clientSocket.getOutputStream());
+					
+					String sout = sinput.readUTF();
+					if (clientSocket.isConnected()) {
+						
+						System.out.println(" - " + CommandFormat.getLogClientConnected(clientSocket.getInetAddress().getHostAddress()));
+						
+						int id;
+						String account_name;
+						String first_name;
+						String last_name;
+						String description;
+						Profile profile;
+						
+						String[] elements = CommandFormat.getValues(sout);
+						id = new Random(System.currentTimeMillis()).nextInt(1000);
+						account_name = elements[0];
+						first_name = elements[1];
+						last_name = elements[2];
+						description = elements[4];
+						
+						profile = new Profile(clientSocket, account_name, first_name, last_name, description);				
+						lobby.getConnectedClients().add(new ConnectedPlayer(lobby.getServer(), clientSocket, id, profile));
+						System.out.println(" - " + CommandFormat.getLogProfileParsed(profile, clientSocket.getInetAddress().getHostAddress()) + "\n");
+						
+					}
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
+			}
+			
+		}
+		
+	}
+	
+	/*public static void main(String[] args) throws IOException {	
 		
 		server = new ServerSocket(27373);
 		//serverSocket = new Socket(server.getInetAddress().getHostAddress(), 27373);
@@ -53,7 +174,7 @@ public abstract class Lobby {
 			output = new PrintWriter(socket.getOutputStream());
 
 			String src_one = input.readUTF();
-			// if (socket.isConnected()) {
+			if (socket.isConnected()) {
 				
 				System.out.println(" - " + CommandFormat.getLogClientConnected(socket.getInetAddress().getHostAddress()));
 				
@@ -64,89 +185,56 @@ public abstract class Lobby {
 				String description;
 				Profile profile;
 				
-				String[] elements = CommandFormat.getConnectionValues(src_one);
+				String[] elements = CommandFormat.getValues(src_one);
 				id = new Random(System.currentTimeMillis()).nextInt(1000);
 				account_name = elements[0];
 				first_name = elements[1];
 				last_name = elements[2];
-				description = elements[4].split("\"")[1].split("\"")[0];		
+				description = elements[4];	
 				
 				profile = new Profile(socket, account_name, first_name, last_name, description);
 				
 				connectedClients.add(new ConnectedPlayer(server, socket, id, profile));			
 				System.out.println(" - " + CommandFormat.getLogProfileParsed(profile, socket.getInetAddress().getHostAddress()) + "\n");
 				
-			// }
+			}
 		
 		}
 		
-	}
-
-	private static void listener() throws IOException {
-		
-			String latestString = serverInput.readUTF();
-			
-			if (CommandFormat.isCommandFormat(latestString)) {
-				String responsible = CommandFormat.getResponsible(latestString);
-				String[] values = CommandFormat.getValues(latestString);
-				
-				// Check whether the sender is an operator.
-				if (operators.contains(responsible)) {
-					
-					if (latestString == CommandFormat.getCloseString(responsible)) {
-						if (!server.isClosed()) {
-							server.close();
-						}
-					} else if (latestString == CommandFormat.getBroadcastString(responsible, values[0])) {
-						// Send a broadcast message.
-					} else if (latestString == CommandFormat.getKickString(responsible, values[0], values[1])) {
-						
-						for (ConnectedPlayer player: connectedClients) {
-							if (player.getProfile().getAccountName().equalsIgnoreCase(values[0])) {
-								// Kick the player.
-							}
-						}
-						
-					} else if (latestString == CommandFormat.getPrivateMessageString(responsible, values[0], values[1])){
-						
-						String res = responsible;
-						String receiver = values[0];
-						String message = values[1];
-						
-						for (ConnectedPlayer player: connectedClients) {
-							if (player.getProfile().getAccountName().equalsIgnoreCase(receiver)) {
-								player.writeData(CommandFormat.getMessageString(res, receiver, message));
-							}
-						}
-						
-					}
-					
-				}
-			}
-			
+	}*/
+	
+	public final void setWelcomeMessage(String arg1) {
+		welcomeMessage = arg1;
 	}
 	
 	/**
-	 * Occurs when a client joins the lobby.<br>
-	 * The client must be connected to fire this event.
-	 * @param socket The socket of the client.
+	 * Send a log-message to the Lobby.
+	 * @param log The log to send to the Lobby.
+	 * @param type The type of log to send to the Lobby.
 	 */
-	public abstract void onClientJoined(Socket socket);
-	
-	public static DataInputStream getInputStream() {
-		return serverInput;
+	public final void log(String log, LogType type) {
+		switch (type) {
+		case WARNING: 
+			System.out.println("LOBBY - " + CommandFormat.getWarningMessage(log));
+		case CAUTION:
+			System.out.println("LOBBY - " + CommandFormat.getCautionMessage(log));
+		case INFORMATIONAL:
+			System.out.println("LOBBY - " + CommandFormat.getInformationalLogMessage(log));
+		case ERROR:
+			System.out.println("LOBBY - " + CommandFormat.getErrorMessage(log));
+		}
 	}
 	
-	public static PrintWriter getOutputStream() {
-		return serverOutput;
+	public final List<ConnectedPlayer> getConnectedClients() {
+		return this.connectedClients;
 	}
 	
-	public static List<ConnectedPlayer> getConnectedClients() {
-		return connectedClients;
+	public final Socket getSocket() {
+		return this.serverSocket;
 	}
 	
-	public static ServerSocket getServer() {
-		return server;
+	public final ServerSocket getServer() {
+		return this.server;
 	}
 
 }
