@@ -4,9 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 import org.thrawn.main.Game;
 import org.thrawn.physics.Physics;
-import org.thrawn.tools.Vector2D;
 import org.thrawn.world.LevelData;
-import org.thrawn.world.WorldUpdater;
 import org.thrawn.world.tiles.Tile;
 
 /**
@@ -21,7 +19,7 @@ public class EntityPlayer implements Entity {
 	public static float offsetX = 487;
 	public static float offsetY = 100;
 	public static float shiftX = Game.screenWidth / 2;
-	public static float shiftY = (Game.screenHeight / 2) + 15;
+	public static float shiftY = (Game.screenHeight / 2) + 14;
 
 	private static String name;
 	private static int health;
@@ -100,6 +98,12 @@ public class EntityPlayer implements Entity {
 			dy -= Physics.gravity;
 			offsetY -= dy * delta;
 			updatePosition();
+			
+			//If you hit a tile going down, stop jumping.
+			if (hitTile() && dy < 0) {
+				jumping = false;
+				dy = 0.2f;
+			}
 		}
 	}
 	
@@ -117,7 +121,6 @@ public class EntityPlayer implements Entity {
 					
 					if (level.getTileFromLevelArray(x, y).hit(position)) {
 						onTile = true;
-						System.out.println("hit");
 						return true;
 						
 					}
@@ -146,7 +149,7 @@ public class EntityPlayer implements Entity {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawRect(shiftX, shiftY, 30, 60);
+		g.drawRect(shiftX, shiftY, 32, 62);
 	}
 
 	@Override
