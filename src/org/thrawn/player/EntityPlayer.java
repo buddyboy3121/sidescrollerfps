@@ -21,7 +21,7 @@ public class EntityPlayer implements Entity {
 	public static float offsetX = 487;
 	public static float offsetY = 100;
 	public static float shiftX = Game.screenWidth / 2;
-	public static float shiftY = (Game.screenHeight / 2) + 17;
+	public static float shiftY = (Game.screenHeight / 2) + 15;
 
 	private static String name;
 	private static int health;

@@ -5,7 +5,6 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.thrawn.player.EntityPlayer;
-import org.thrawn.tools.Vector2D;
 
 
 public class Tile {
@@ -41,7 +40,7 @@ public class Tile {
 	 * @return
 	 */
 	public boolean hit(Rectangle player) {
-		if (player.intersects(coordinates)) {
+		if (player.intersects(new Rectangle(originalX, originalY, 32, 32))) {
 			return true;
 		}else{
 			return false;
