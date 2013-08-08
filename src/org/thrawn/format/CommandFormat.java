@@ -9,7 +9,7 @@ public final class CommandFormat {
 	}
 	
 	public static String getConnectionString(Profile profile) {
-		return getCommand(new String[]{"SERVER", "EVENT", "NEW_CLIENT"}, new String[]{profile.getAccountName(), profile.getFirstName(), profile.getLastName(), profile.getIPAddress(), profile.getDescription()});
+		return getCommand(new String[]{"SERVER", "EVENT", "NEW_CLIENT"}, new String[]{profile.getAccountName(), profile.getFirstName(), profile.getLastName(), profile.getDescription()});
 	}
 	
 	public static String getLogMessage(String type, String log) {

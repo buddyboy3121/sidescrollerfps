@@ -86,6 +86,7 @@ public class Lobby {
 					if (line.equals(CommandFormat.getCloseString(resp))) {
 						this.lobby.getServer().close();
 						this.lobby.getSocket().close();
+						System.out.println("The server closed.");
 					} else if (line.equals(CommandFormat.getKickString(resp, values[0], values[1]))) {
 						// Kick a Player.
 					} else if (line.equals(CommandFormat.getBanString(resp, values[0], values[1]))) {
@@ -125,15 +126,19 @@ public class Lobby {
 			while (true) {		
 				try {
 					
-					ObjectInputStream inputStream = new ObjectInputStream(serverSocket.getInputStream());
-					ObjectOutputStream outputStream = new ObjectOutputStream(serverSocket.getOutputStream());
-					
 					Socket clientSocket;
 					clientSocket = lobby.server.accept();				
 					
+					DataInputStream inputClientStream = new DataInputStream(clientSocket.getInputStream());
+					ObjectOutputStream outputClientStream = new ObjectOutputStream(clientSocket.getOutputStream());
+					
 					Profile profile;
+					String source = inputClientStream.readUTF();
+					String[] values = CommandFormat.getValues(source);
 					
+					profile = new Profile(lobby, clientSocket, values[0], values[1], values[2], values[3]);
 					
+					// Now we can do whatever we want with the profile.
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block

@@ -1,5 +1,7 @@
 package org.thrawn.server;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,8 +12,8 @@ import org.thrawn.format.CommandFormat;
 
 public class Client {
 
-	private ObjectInputStream input;
-	private ObjectOutputStream output;
+	private DataInputStream input;
+	private DataOutputStream output;
 	
 	private Profile profile;
 	private Socket socket;
@@ -27,11 +29,11 @@ public class Client {
 		
 		if (socket.isConnected()) {
 			
-			input = new ObjectInputStream(socket.getInputStream());
-			output = new ObjectOutputStream(socket.getOutputStream());
+			input = new DataInputStream(socket.getInputStream());
+			output = new DataOutputStream(socket.getOutputStream());
 			
 			// Send the information about the client.
-			output.writeUTF(CommandFormat.getLogProfileParsed(profile, socket.getInetAddress().getHostAddress()));
+			output.writeUTF(CommandFormat.getConnectionString(profile));
 			
 		}
 		
