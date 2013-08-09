@@ -1,5 +1,7 @@
 package org.thrawn.server;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.JFrame;
+import javax.swing.JList;
+
 import org.thrawn.format.CommandFormat;
 import org.thrawn.format.LogType;
 
@@ -19,7 +24,7 @@ public class Lobby {
 	
 	private List<String> operators = new ArrayList<String>();
 	private String welcomeMessage = "Welcome to this Lobby, ($p).";
-	private List<Client> connectedClients = new ArrayList<Client>();
+	private List<Profile> connectedClients = new ArrayList<Profile>();
 	
 	private ServerSocket server;
 	private Socket serverSocket;
@@ -179,7 +184,7 @@ public class Lobby {
 		}
 	}
 	
-	public final List<Client> getConnectedClients() {
+	public final List<Profile> getConnectedClients() {
 		return this.connectedClients;
 	}
 	

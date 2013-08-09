@@ -13,9 +13,6 @@ import org.thrawn.world.tiles.Tile;
  * Represents an entity that spawns automatically in the world.<br>
  * Use the constructor to set the values you want for the entity.
  */
-
-
-
 public class EntityPlayer implements Entity {
 	
 	public static float offsetX = 487;

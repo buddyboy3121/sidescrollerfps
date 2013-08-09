@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import org.thrawn.format.CommandFormat;
+
 public class Profile {
 
 	private String accountName;
@@ -38,9 +40,15 @@ public class Profile {
 	 * @throws IOException
 	 */
 	public final void write(String data) throws IOException {
-		if ((socket.isConnected() && !socket.isClosed()) && (data != null && data != "")) {
-			getOutputStream().writeUTF(data);
-		}
+		try {
+			if ((socket.isConnected() && !socket.isClosed()) && (data != null && data != "")) {
+				getOutputStream().writeUTF(data);
+			} else {
+				System.out.println(CommandFormat.getCurrentMethodError("CONNECTION", "Either the Socket is closed, or it isn't connected"));
+			}
+		} catch (Exception e) {
+			System.out.println(CommandFormat.getCurrentMethodError("EXCEPTION", e.getMessage()));
+		}	
 	}
 	
 	/**

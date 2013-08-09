@@ -24,18 +24,24 @@ public class Client {
 	
 	public final void connect(String host, int port) throws UnknownHostException, IOException {
 		
-		Socket socket = new Socket(host, port);
-		this.socket = socket;
-		
-		if (socket.isConnected()) {
+		try {
+			Socket socket = new Socket(host, port);
+			this.socket = socket;
 			
-			input = new DataInputStream(socket.getInputStream());
-			output = new DataOutputStream(socket.getOutputStream());
-			
-			// Send the information about the client.
-			output.writeUTF(CommandFormat.getConnectionString(profile));
-			
-		}
+			if (socket.isConnected()) {
+				
+				input = new DataInputStream(socket.getInputStream());
+				output = new DataOutputStream(socket.getOutputStream());
+				
+				// Send the information about the client.
+				output.writeUTF(CommandFormat.getConnectionString(profile));
+				
+			} else {		
+				System.out.println(CommandFormat.getCurrentMethodError("CONNECTION", "Could not connect to the server"));
+			}
+		} catch (Exception e) {
+			System.out.println(CommandFormat.getCurrentMethodError("EXCEPTION", e.getMessage()));
+		}	
 		
 	}
 	

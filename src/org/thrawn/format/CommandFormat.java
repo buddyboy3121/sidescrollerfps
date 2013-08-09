@@ -1,9 +1,21 @@
 package org.thrawn.format;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.thrawn.server.Profile;
 
 public final class CommandFormat {
 
+	 public static StackTraceElement getCurrentMethod(){
+	     try{
+	         throw new Exception();
+	     }catch(Exception e){
+	         return e.getStackTrace()[0];
+	     }
+	 }
+	
 	public static boolean isTargetCommandFormat(String cmd) {
 		return cmd.matches("\\{(.*?)#(.*?)@(.*?):(.*?)\\}");
 	}
@@ -13,15 +25,30 @@ public final class CommandFormat {
 	}
 	
 	public static String getLogMessage(String type, String log) {
-		return getCommand(new String[]{"LOG", type}, new String[]{"\"" + log + "\""});
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		return getCommand(new String[]{"LOG", type}, new String[]{dateFormat.format(date), "\"" + log + "\""});
 	}
 	
 	public static String getCautionMessage(String log) {
 		return getLogMessage("!CAUTION!", log);
 	}
 	
+	public static String getCurrentMethodError(String type, String message) {
+		StackTraceElement search = getCurrentMethod();
+		return getSpecificMessage(message, type, search.getMethodName(), search.getLineNumber(), search.getClassName());
+	}
+	
+	public static String getSpecificMessage(String message, String type, String method, int line, String className) {
+		return getLogMessage(type, message + "@\"" + method + "\":" + line + " - (" + className + ")");
+	}
+	
 	public static String getErrorMessage(String log) {
 		return getLogMessage("!ERROR!", log);
+	}
+	
+	public static String getInternalMessage(String log) {
+		return getLogMessage("INTERNAL", log);
 	}
 	
 	public static String getWarningMessage(String log) {
