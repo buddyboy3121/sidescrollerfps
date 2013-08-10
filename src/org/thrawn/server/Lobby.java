@@ -20,7 +20,7 @@ import javax.swing.JList;
 import org.thrawn.format.CommandFormat;
 import org.thrawn.format.LogType;
 
-public class Lobby {
+public class Lobby implements Runnable {
 	
 	private List<String> operators = new ArrayList<String>();
 	private String welcomeMessage = "Welcome to this Lobby, ($p).";
@@ -194,6 +194,17 @@ public class Lobby {
 
 	public final ServerSocket getServer() {
 		return this.server;
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			for (Profile profile: connectedClients) {
+				if (!profile.getSocket().isConnected()) {
+					connectedClients.remove(profile);
+				}
+			}
+		}
 	}
 
 }
