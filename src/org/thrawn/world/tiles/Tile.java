@@ -4,6 +4,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.thrawn.player.EntityPlayer;
 
 
@@ -11,18 +12,18 @@ public class Tile {
 
 	private byte[] metadata;
 	
-	private Rectangle coordinates;
+	private Rectangle tile;
 	public static int size = 32;
-	public Image tile;
+	public Image tileImage;
 	
 	//Stores the original x and y positions.
 	private float originalX, originalY;
 	
-	public Tile(String tileImage, float x, float y) throws SlickException {
-		coordinates = new Rectangle(x, y, size, size);
+	public Tile(String imagePath, float x, float y) throws SlickException {
+		tile = new Rectangle(x, y, size, size);
 		originalX = x;
 		originalY = y;
-		tile = new Image(tileImage);
+		tileImage = new Image(imagePath);
 	}
 	
 	/**
@@ -30,17 +31,17 @@ public class Tile {
 	 * @param g The graphics to use for drawing the image.
 	 */
 	public void render(Graphics g) {
-		g.drawImage(tile, coordinates.getX(), coordinates.getY());
-		g.drawRect(coordinates.getX(), coordinates.getY(), size, size);
+		g.drawImage(tileImage, tile.getX(), tile.getY());
+		g.drawRect(tile.getX(), tile.getY(), size, size);
 	}
 	
 	/**
 	 * Returns if the player hits the block or not.
-	 * @param player
+	 * @param hitSide
 	 * @return
 	 */
-	public boolean hit(Rectangle player) {
-		if (player.intersects(new Rectangle(originalX, originalY, 32, 32))) {
+	public boolean hit(Shape object) {
+		if (object.intersects(tile)) {
 			return true;
 		}else{
 			return false;
@@ -53,7 +54,7 @@ public class Tile {
 	 * @param y The Y-coordinate.
 	 */
 	public void setLocation(int x, int y) {
-		coordinates.setBounds(x, y, size, size);
+		tile.setBounds(x, y, size, size);
 	}
 	
 	/**
@@ -61,7 +62,7 @@ public class Tile {
 	 * @return the location.
 	 */
 	public Rectangle getLocation() {
-		return this.coordinates;
+		return this.tile;
 	}
 	
 	public byte[] getMetadata() {
@@ -77,8 +78,8 @@ public class Tile {
 	}
 		
 	public void update() {
-		coordinates.setX(originalX - EntityPlayer.offsetX);
-		coordinates.setY(originalY - EntityPlayer.offsetY);
+		tile.setX(originalX - EntityPlayer.offsetX);
+		tile.setY(originalY - EntityPlayer.offsetY);
 	}
 	
 }

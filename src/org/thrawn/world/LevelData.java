@@ -1,5 +1,9 @@
 package org.thrawn.world;
 
+import org.newdawn.slick.SlickException;
+import org.thrawn.world.tiles.Dirt;
+import org.thrawn.world.tiles.Grass;
+import org.thrawn.world.tiles.Rock;
 import org.thrawn.world.tiles.Tile;
 
 public class LevelData {
@@ -31,9 +35,15 @@ public class LevelData {
 	 * @param tileX The X-coordinate.
 	 * @param tileY The Y-coordinate.
 	 * @param tile The tile to set at the specified coordinates.
+	 * @throws SlickException 
 	 */
-	public void addTile(int tileX, int tileY, Tile tile) {
-		level[tileX][tileY] = tile;
+	public void addTile(int tileX, int tileY, int ID) throws SlickException {
+		switch(ID) {
+		case 1: level[tileX][tileY] = new Rock(tileX * Tile.size, tileY * Tile.size); break;
+		case 2: level[tileX][tileY] = new Grass(tileX * Tile.size, tileY * Tile.size); break;
+		case 3: level[tileX][tileY] = new Dirt(tileX * Tile.size, tileY * Tile.size); break;
+		}
+		
 	}
 
 	/**

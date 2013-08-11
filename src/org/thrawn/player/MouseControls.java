@@ -1,31 +1,37 @@
 package org.thrawn.player;
 
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-import javax.swing.JFrame;
-
 import org.lwjgl.input.Mouse;
+import org.newdawn.slick.geom.Point;
+import org.thrawn.main.Game;
+import org.thrawn.world.tiles.Tile;
 
-public class MouseControls extends JFrame implements MouseMotionListener{
+public class MouseControls {
     
-    int my;
-    int mx;
+	private static float x = Mouse.getY();
+	private static float y = Mouse.getX();
+	private static Point mousePoint;
+	
+	public void update() {
+		x = Mouse.getX();
+		y = Game.screenHeight - Mouse.getY();
+	}
     
-    Mouse mouse;
+    public float getXBlockTileOn() {
+    	return (EntityPlayer.offsetX + x) / Tile.size;
+    }
     
-    @Override
-    public void mouseDragged(MouseEvent e) {
-       mx = e.getX();
-       my = e.getY();
-       e.consume();
+    public float getYBlockTileOn() {
+    	return (EntityPlayer.offsetY + y) / Tile.size;
+    }
+    
+    public float getX() {
+    	return x + EntityPlayer.offsetX;
     }
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
-       mx = e.getX();
-       my = e.getY();
-       e.consume();
-    }
+	public float getY() {
+		return y + EntityPlayer.offsetY;
+	}
+    
 }
 
 

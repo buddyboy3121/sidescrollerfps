@@ -2,6 +2,7 @@ package org.thrawn.main.information;
 
 import org.newdawn.slick.Graphics;
 import org.thrawn.player.EntityPlayer;
+import org.thrawn.player.MouseControls;
 
 public class Infomation {
 
@@ -10,8 +11,12 @@ public class Infomation {
 	 * It renders all the coordinates and info on the screen.
 	 */
 	
+	private MouseControls mouse = new MouseControls();
+	
 	public void render(Graphics g) {
-		g.drawString(String.format("ShiftX: %f\nShiftY: %f\nHit Tile: %b\nJumping: %b\nOffsetX: %f\nOffsetY: %f", EntityPlayer.shiftX,
-				EntityPlayer.shiftY, EntityPlayer.onTile, EntityPlayer.jumping, EntityPlayer.offsetX, EntityPlayer.offsetY), 600, 10);
+		g.drawString(String.format("ShiftX: %f\nShiftY: %f\nHit Tile: %b\nJumping: %b\nOffsetX: %f\nOffsetY: %f" +
+				"\nBlockX %f\nBlockY: %f\nX: %f\nY: %f", EntityPlayer.shiftX,
+				EntityPlayer.shiftY, EntityPlayer.hitTile, EntityPlayer.jumping, EntityPlayer.offsetX, EntityPlayer.offsetY,
+				mouse.getXBlockTileOn(), mouse.getYBlockTileOn(), mouse.getX(), mouse.getY()), 600, 10);
 	}
 }

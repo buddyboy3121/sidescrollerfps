@@ -7,9 +7,11 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.thrawn.main.information.Infomation;
 import org.thrawn.player.EntityPlayer;
 import org.thrawn.player.KeyControls;
+import org.thrawn.world.LevelData;
 import org.thrawn.world.WorldRenderer;
 import org.thrawn.world.WorldUpdater;
 import org.thrawn.world.server.Generator;
+import org.thrawn.world.tiles.Rock;
 
 
 public class Game extends BasicGameState {
@@ -29,8 +31,9 @@ public class Game extends BasicGameState {
 		worldRenderer = new WorldRenderer();
 		worldUpdater = new WorldUpdater();
 		info = new Infomation();
-		
+	
 		generator.generateLevel();
+		new LevelData().addTile(23, 15, 1);
 	}
 	
 	public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
