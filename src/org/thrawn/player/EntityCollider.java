@@ -2,8 +2,6 @@ package org.thrawn.player;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Line;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.thrawn.main.Game;
 import org.thrawn.world.LevelData;
 import org.thrawn.world.tiles.Tile;
@@ -71,8 +69,10 @@ public class EntityCollider {
 	public void updateCollider(float x, float y) {
 		positions[0].set(x, y + 64, 32, 1); //Feet.
 		positions[1].set(x, y, 32, 1); //Head.
-		positions[2].set(x, y + 1, 1, 62); //Left side.
+		positions[2].set(x, y, 1, 64); //Left side.
 		positions[3].set(x + 32, y + 1, 1, 62); //Right side.
+		
+		System.out.println(positions[2].getX() + "\t" + x);
 	}
 	
 	public void draw(Graphics g) {
