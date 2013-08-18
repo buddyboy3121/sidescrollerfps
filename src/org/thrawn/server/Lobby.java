@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 
 import org.thrawn.format.CommandFormat;
+import org.thrawn.format.CommandFormat.TargetElement;
 import org.thrawn.format.LogType;
 
 public class Lobby implements Runnable {
@@ -85,19 +86,19 @@ public class Lobby implements Runnable {
 				while (true) {
 					
 					String line = input.readUTF();
-					String[] values = CommandFormat.getTargetValues(line);
-					String resp = CommandFormat.getResponsible(line);
+					TargetElement[] values = CommandFormat.getTargetElements(line);
+					String resp = CommandFormat.getTargetResponsible(line);
 					
 					if (line.equals(CommandFormat.getCloseString(resp))) {
-						this.lobby.getServer().close();
-						this.lobby.getSocket().close();
-						System.out.println("The server closed.");
-					} else if (line.equals(CommandFormat.getKickString(resp, values[0], values[1]))) {
-						// Kick a Player.
-					} else if (line.equals(CommandFormat.getBanString(resp, values[0], values[1]))) {
-						// Ban a Player.
-					} else if (line.equals(CommandFormat.getBroadcastString(resp, values[0]))) {
 						
+						// Close all the open connections.
+						this.output.close();
+						this.input.close();
+						this.lobby.getSocket().close();
+						this.lobby.getServer().close();
+						
+						System.out.println("The server closed.");
+				
 					}
 					
 				}

@@ -9,6 +9,7 @@ import org.thrawn.format.CommandFormat;
 
 public class Profile {
 
+	private Statistics statistics;
 	private String accountName;
 	private String firstName;
 	private String lastName;

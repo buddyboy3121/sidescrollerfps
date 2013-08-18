@@ -8,6 +8,53 @@ import org.thrawn.server.Profile;
 
 public final class CommandFormat {
 
+	public static class TargetElement {
+		
+		private String name;
+		private String value;
+		
+		public TargetElement(String name, String value) {
+			this.name = name;
+			this.value = value;
+		}
+		
+		public final String getName() {
+			return name;
+		}
+		public final void setName(String name) {
+			this.name = name;
+		}
+		public final String getValue() {
+			return value;
+		}
+		public final void setValue(String value) {
+			this.value = value;
+		}
+		
+	}
+	
+	public static String getCommand(String[] tags, String[] elements) {
+		String finalCommand = "";
+		finalCommand += "{";
+		for (int i = 0; i < tags.length; i++) {
+			if (i < tags.length - 1) {
+				finalCommand += tags[i] + "#";
+			} else {
+				finalCommand += tags[i];
+			}
+		}
+		finalCommand += ":";
+		for (int i = 0; i < elements.length; i++) {
+			if (i < elements.length - 1) {
+				finalCommand += elements[i] + "&";
+			} else {
+				finalCommand += elements[i];
+			}
+		}
+		finalCommand += "}";
+		return finalCommand;
+	}
+	
 	 public static StackTraceElement getCurrentMethod(){
 	     try{
 	         throw new Exception();
@@ -15,10 +62,6 @@ public final class CommandFormat {
 	         return e.getStackTrace()[0];
 	     }
 	 }
-	
-	public static boolean isTargetCommandFormat(String cmd) {
-		return cmd.matches("\\{(.*?)#(.*?)@(.*?):(.*?)\\}");
-	}
 	
 	public static String getConnectionString(Profile profile) {
 		return getCommand(new String[]{"SERVER", "EVENT", "NEW_CLIENT"}, new String[]{profile.getAccountName(), profile.getFirstName(), profile.getLastName(), profile.getDescription()});
@@ -32,6 +75,14 @@ public final class CommandFormat {
 	
 	public static String getCautionMessage(String log) {
 		return getLogMessage("!CAUTION!", log);
+	}
+	
+	public static String getCommandListenerString(String state) {
+		return "{COMMAND#LISTENER:" + state + "}";
+	}
+	
+	public static String getCloseString(String responsible) {
+		return "{SERVER#CLOSE@" + responsible + "}";
 	}
 	
 	public static String getCurrentMethodError(String type, String message) {
@@ -59,28 +110,6 @@ public final class CommandFormat {
 		return getLogMessage("INFO", log);
 	}
 	
-	public static String getCommand(String[] tags, String[] elements) {
-		String finalCommand = "";
-		finalCommand += "{";
-		for (int i = 0; i < tags.length; i++) {
-			if (i < tags.length - 1) {
-				finalCommand += tags[i] + "#";
-			} else {
-				finalCommand += tags[i];
-			}
-		}
-		finalCommand += ":";
-		for (int i = 0; i < elements.length; i++) {
-			if (i < elements.length - 1) {
-				finalCommand += elements[i] + "&";
-			} else {
-				finalCommand += elements[i];
-			}
-		}
-		finalCommand += "}";
-		return finalCommand;
-	}
-	
 	/**
 	 * Returns all the values in a command.
 	 * @param conString The command.
@@ -99,10 +128,22 @@ public final class CommandFormat {
 		return cmd.split("\\{")[1].split("\\}")[0].split(":")[0].split("#");
 	}
 	
+	/**
+	 * The log shown when the {@link Profile} of a client has been parsed successfully.<br>
+	 * Client's {@link Profile} is only parsed once the {@link Client} has connected.
+	 * @param profile The {@link Profile} of the new {@link Client}.
+	 * @param ipAddress The IP address of the new {@link Client}.
+	 * @return the full-built log.
+	 */
 	public static String getLogProfileParsed(Profile profile, String ipAddress) {
 		return getCommand(new String[]{"CLIENT", "EVENT", "PROFILE_PARSED"}, new String[]{profile.getAccountName(), ipAddress});
 	}
 	
+	/**
+	 * The log shown when the {@link Client} has been accepted into a {@link Lobby}.
+	 * @param ipAddress The IP address of the new {@link Client}.
+	 * @return the full-built log.
+	 */
 	public static String getLogClientAccepted(String ipAddress) {
 		return getCommand(new String[]{"CLIENT", "EVENT", "ACCEPTED"}, new String[]{ipAddress});
 	}
@@ -111,54 +152,125 @@ public final class CommandFormat {
 		return getCommand(new String[]{"CLIENT", "EVENT", "CONNECTED"}, new String[]{ipAddress});
 	}
 	
-	public static String getKickString(String responsible, String name, String reason) {
-		return "{CLIENT#KICK@" + responsible + ":" + name + "&" + reason + "}";
+	
+	/**
+	 * Returns the command representing a close of a {@link Lobby}.<br>
+	 * his command is built using the {@link #getTargetCommand(String[], String, String[])} method.<br>
+	 * Always be sure to use that method when you make your own commands.<br>
+	 * That way, you can be sure everything is parsed correctly, and no errors will occur unless anything is wrong.
+	 * @param responsible The responsible individual of this action.<br>
+	 * This is used to see whether the responsible had the permissions to send this command.
+	 * @param reason The reason for the closing of the server.<br>
+	 * This is the message clients will see when they get kicked from the server.
+	 * @return the fully-built command.
+	 */
+	public static String getCloseServerCommand(String responsible, String reason) {
+		return getTargetCommand(new String[]{"SERVER#CLOSE"}, responsible, new String[]{reason});
 	}
+	
+	/**
+	 * Returns the command representing a restart of a {@link Lobby}.<br>
+	 * This command is built using the {@link #getTargetCommand(String[], String, String[])} method.<br>
+	 * Always be sure to use that method when you make your own commands.<br>
+	 * That way, you can be sure everything is parsed correctly, and no errors will occur unless anything is wrong.
+	 * @param responsible The responsible individual of this action.<br>
+	 * This is used to see whether the responsible had the permissions to send this command.
+	 * @param reason The reason for the restart of the server.<br>
+	 * This is the message clients will see when they get kicked from the server.
+	 * @return the fully-built command.
+	 */
+	public static String getRestartServerCommand(String responsible, String reason) {
+		return getTargetCommand(new String[]{"SERVER#RESTART"}, responsible, new String[]{reason});
+	}
+	
+	/**
+	 * Returns the command representing a broadcast message on a {@link Lobby}.<br>
+	 * This command is built using the {@link #getTargetCommand(String[], String, String[])} method.<br>
+	 * Always be sure to use that method when you make your own commands.<br>
+	 * That way, you can be sure everything is parsed correctly, and no errors will occur unless anything is wrong.
+	 * @param responsible The responsible individual of this action.<br>
+	 * This is used to see whether the responsible had the permissions to send this command.
+	 * @param message The message of the broadcast to the server.<br>
+	 * No special-characters are allowed to be used in this message.
+	 * @return the fully-built command.
+	 */
+	public static String getBroadcastCommand(String responsible, String message) {
+		return getTargetCommand(new String[]{"SERVER#BROADCAST"}, responsible, new String[]{message});
+	}
+	
+	
 
-	public static String getBanString(String responsible, String name, String reason) {
-		return "{CLIENT#BAN@" + responsible + ":" + name + "&" + reason + "}";
+	/**
+	 * Returns the tags of the {@link String} formatted command.<br>
+	 * The tags are used for finding the sent commands in a log.<br>
+	 * A tag can be named after what it does, and where it's located.
+	 * @param cmd The {@link String} formatted command to parse.
+	 * @return the tags of the {@link String} formatted command.
+	 */
+	public static String[] getTargetTags(String cmd) {
+		return cmd.split("\\{")[1].split("\\}")[0].split(":")[0].split("@")[0].split("#");
 	}
 	
-	public static String getPrivateMessageString(String responsible, String name, String message) {
-		return "{CLIENT#P_MSG@" + responsible + ":" + name + "&" + message + "}";
-	}
-	
-	public static String getClientCommandString(String cmd) {
-		return "{CLIENT#COMMAND:" + cmd + "}";
-	}
-	
-	public static String getBroadcastString(String responsible, String message) {
-		return "{SERVER#BROADCAST@" + responsible + ":" + message + "}";
-	}
-	
-	public static String getMessageString(String responsible, String receiver, String message) {
-		return "{CLIENT#MSG@" + responsible + ":" + receiver + "&" + message + "}";
-	}
-	
-	public static String getResponsible(String cmd) {
-		if (cmd.contains(":")) {
-			return cmd.split("\\{")[1].split("\\}")[0].split(":")[0].split("@")[1];
-		} else {
-			return cmd.split("\\{")[1].split("\\}")[0].split("@")[1];
+	/**
+	 * Returns the elements of the {@link String} formatted command.<br>
+	 * There must be atleast one element to use this function.
+	 * @param cmd The {@link String} format of the command to parse.
+	 * @return the elements of the {@link String} formatted command.
+	 */
+	public static TargetElement[] getTargetElements(String cmd) {
+		// {SERVER#KICK@"":id=elementOne&name=elementTwo}
+		TargetElement[] elements = new TargetElement[]{};
+		for (String str: cmd.split("\\{")[1].split("\\}")[0].split(":")[1].split("&")) {
+			elements[elements.length - 1] = new TargetElement(str.split("=")[0], str.split("=")[1]);
 		}
+		return elements;
 	}
 	
-	public static String[] getTargetValues(String cmd) {
-		if (cmd.matches("\\{.*?#.*?@.*?\\}")) {
-			return null;
-		} else if (cmd.matches("\\{(.*?)#(.*?)@(.*?):(.*?)\\}")) {
-			return cmd.split("\\{")[1].split("\\}")[0].split(":")[1].split("&");
-		} else {
-			return null;
+	/**
+	 * Returns the responsible command sender of a specified command.<br>
+	 * @param cmd The command in {@link String} format, to parse and find the responsible of.
+	 * @return The responsible command sender of the specified command.
+	 */
+	public static String getTargetResponsible(String cmd) {
+		return cmd.split("\\{")[1].split("\\}")[0].split(":")[0].split("@\"")[1].split("\"")[0];
+	}
+	
+	/**
+	 * Create a new command structure.<br>
+	 * The only parameter that can be left to <b>null</b> is the elements.<br>
+	 * Tags can be named after what the command does, and in what section of the program.
+	 * @param tags The tags of the command used for finding logs in the {@link LogEngine}.
+	 * @param responsible The responsible name of the person that performed the action.
+	 * @param elements The elements of the command, used for getting values/arguments out of the command.
+	 * @return the new command-structure as a {@link String}.
+	 */
+	public static String getTargetCommand(String[] tags, String responsible, String[] elements) {
+		
+		String finalCommand = "";
+		finalCommand += "{";
+		
+		for (int i = 0; i < tags.length; i++) {
+			if (i < tags.length - 1) {
+				finalCommand += tags[i] + "#";
+			} else {
+				finalCommand += tags[i];
+			}
 		}
-	}
-	
-	public static String getCommandListenerString(String state) {
-		return "{COMMAND#LISTENER:" + state + "}";
-	}
-	
-	public static String getCloseString(String responsible) {
-		return "{SERVER#CLOSE@" + responsible + "}";
+		
+		finalCommand += "@\"";
+		finalCommand += responsible + "\":";
+		
+		for (int i = 0; i < elements.length; i++) {
+			if (i < elements.length - 1) {
+				finalCommand += elements[i] + "&";
+			} else {
+				finalCommand += elements[i];
+			}
+		}
+		
+		finalCommand += "}";
+		return finalCommand;
+		
 	}
 	
 }
