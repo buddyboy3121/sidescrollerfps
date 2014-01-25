@@ -33,7 +33,7 @@ public final class CommandFormat {
 		
 	}
 	
-	public static String getCommand(String[] tags, String[] elements) {
+	public static String getCommand(String[] tags, String... elements) {
 		String finalCommand = "";
 		finalCommand += "{";
 		for (int i = 0; i < tags.length; i++) {
@@ -244,7 +244,7 @@ public final class CommandFormat {
 	 * @param elements The elements of the command, used for getting values/arguments out of the command.
 	 * @return the new command-structure as a {@link String}.
 	 */
-	public static String getTargetCommand(String[] tags, String responsible, String[] elements) {
+	public static String getTargetCommand(String[] tags, String responsible, String... elements) {
 		
 		String finalCommand = "";
 		finalCommand += "{";

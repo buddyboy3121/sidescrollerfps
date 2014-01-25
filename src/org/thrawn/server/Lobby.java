@@ -1,202 +1,86 @@
 package org.thrawn.server;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import org.thrawn.format.CommandFormat;
-import org.thrawn.format.CommandFormat.TargetElement;
-import org.thrawn.format.LogType;
 
-public class Lobby implements Runnable {
-	
-	private List<String> operators = new ArrayList<String>();
-	private String welcomeMessage = "Welcome to this Lobby, ($p).";
-	private List<Profile> connectedClients = new ArrayList<Profile>();
-	
-	private ServerSocket server;
-	private Socket serverSocket;
-	
-	private LobbyListener lobbyListener;
-	private CommandListener commandListener;
-	
-	public Lobby(String host, int port) throws IOException {
-		
-		// Initialize the Lobby/Server.
-		this.server = new ServerSocket(port);
-		
-		this.serverSocket = new Socket(host, port);
-		this.server.accept();
-		
-		lobbyListener = new LobbyListener(this);
-		commandListener = new CommandListener(this);
-		
-		new Thread(lobbyListener).start();
-		new Thread(commandListener).start();
-		
-		System.out.println(CommandFormat.getCommand(new String[]{"LOBBY"}, new String[]{"Initialized"}));
-		
-	}
-	
-	private class CommandListener implements Runnable {
+public class Lobby {
 
-		private Lobby lobby;
-		private DataInputStream input;
-		private DataOutputStream output;
-		
-		public CommandListener(Lobby lobby) {
-			this.lobby = lobby;
-		}
-		
-		public DataInputStream getInput() {
-			return this.input;
-		}
-		
-		public DataOutputStream getOutput() {
-			return this.output;
-		}
-		
-		public Lobby getLobby() {
-			return this.lobby;
-		}
-		
-		@Override
-		public void run() {
+	private static String name;
+	private static String welcome_message = "Welcome to my Lobby!";
+	private static int players = 0;
+	
+	private static Map<String, Object> clients = new HashMap<String, Object>();
+	private static List<String> bannedList = new ArrayList<String>();
+	
+	private static final int MAX_PLAYERS = 10;
+	private static final int PORT = 5667;
+	
+	private static ServerSocket server;
+	
+	public static void main(String[] par1) {
+		try {
 			
-			System.out.println(CommandFormat.getCommandListenerString("Initialized"));
+			server = new ServerSocket(PORT);
 			
-			try {
+			System.out.println(">> Started a server on port " + PORT + ".");
+			System.out.println(">> The server can now accept connections.");
+			
+			System.out.println();
+			
+			while (true) {
 				
-				input = new DataInputStream(lobby.getSocket().getInputStream());
-				output = new DataOutputStream(lobby.getSocket().getOutputStream());
+				Socket var1 = server.accept();
 				
-				while (true) {
-					
-					String line = input.readUTF();
-					TargetElement[] values = CommandFormat.getTargetElements(line);
-					String resp = CommandFormat.getTargetResponsible(line);
-					
-					if (line.equals(CommandFormat.getCloseString(resp))) {
-						
-						// Close all the open connections.
-						this.output.close();
-						this.input.close();
-						this.lobby.getSocket().close();
-						this.lobby.getServer().close();
-						
-						System.out.println("The server closed.");
+				System.out.println(">> A player joined the lobby (" + var1.getLocalAddress().getHostAddress() + ").");
+				players++;
 				
-					}
-					
+				DataOutputStream varOutput1 = new DataOutputStream(var1.getOutputStream());
+				
+				send(varOutput1, CommandFormat.getCommand(new String[]{"NAME"}, name), 1);
+				send(varOutput1, CommandFormat.getCommand(new String[]{"PLAYER_COUNT"}, String.valueOf(players)), 1);
+				send(varOutput1, CommandFormat.getCommand(new String[]{"MAX_PLAYERS"}, String.valueOf(MAX_PLAYERS)), 1);
+				send(varOutput1, CommandFormat.getCommand(new String[]{"WELCOME_MSG"}, welcome_message), 1);
+				
+				int id = new Random().nextInt(999999);
+				while (clients.containsKey(id)) {
+					id = new Random().nextInt(999999);
 				}
 				
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
-	
-		}
-		
-	}
-	
-	private class LobbyListener implements Runnable {
-
-		private Lobby lobby;
-		
-		public LobbyListener(Lobby lobby) {
-			this.lobby = lobby;
-		}
-		
-		public final Lobby getLobby() {
-			return this.lobby;
-		}
-		
-		@Override
-		public void run() {
-			
-			System.out.println(CommandFormat.getCommand(new String[]{"LOBBY", "LISTENER"}, new String[]{"Initialized"}));
-			
-			while (true) {		
-				try {
-					
-					Socket clientSocket;
-					clientSocket = lobby.server.accept();				
-					
-					DataInputStream inputClientStream = new DataInputStream(clientSocket.getInputStream());
-					ObjectOutputStream outputClientStream = new ObjectOutputStream(clientSocket.getOutputStream());
-					
-					Profile profile;
-					String source = inputClientStream.readUTF();
-					String[] values = CommandFormat.getValues(source);
-					
-					profile = new Profile(lobby, clientSocket, values[0], values[1], values[2], values[3]);
-					
-					// Now we can do whatever we want with the profile.
-					
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				send(varOutput1, CommandFormat.getCommand(new String[]{"SESSION_ID"}, String.valueOf(id)), 1);
+				
+				if (players > MAX_PLAYERS) {
+					send(varOutput1, null, 4);
+					var1.close();
 				}
+				
+				Client client = new Client(var1);
+				
+				clients.put(String.valueOf(id), client);	
+				new Thread(client).start();
+				
 			}
 			
-		}
-		
-	}
-	
-	public final void setWelcomeMessage(String arg1) {
-		welcomeMessage = arg1;
-	}
-	
-	public void sendCommand(String cmd) throws IOException {
-		if (cmd != "") {
-			commandListener.getOutput().writeUTF(cmd);
-			commandListener.getOutput().flush();
-		}
-	}
-	
-	/**
-	 * Send a log-message to the Lobby.
-	 * @param log The log to send to the Lobby.
-	 * @param type The type of log to send to the Lobby.
-	 */
-	public final void log(String log, LogType type) {
-		switch (type) {
-		case WARNING: 
-			System.out.println("LOBBY - " + CommandFormat.getWarningMessage(log));
-		case CAUTION:
-			System.out.println("LOBBY - " + CommandFormat.getCautionMessage(log));
-		case INFORMATIONAL:
-			System.out.println("LOBBY - " + CommandFormat.getInformationalLogMessage(log));
-		case ERROR:
-			System.out.println("LOBBY - " + CommandFormat.getErrorMessage(log));
-		}
-	}
-	
-	public final List<Profile> getConnectedClients() {
-		return this.connectedClients;
-	}
-	
-	public final Socket getSocket() {
-		return this.serverSocket;
-	}
-
-	public final ServerSocket getServer() {
-		return this.server;
-	}
-
-	@Override
-	public void run() {
-		while (true) {
-			for (Profile profile: connectedClients) {
-				if (!profile.getSocket().isConnected()) {
-					connectedClients.remove(profile);
-				}
-			}
+		} catch (Exception e) {
+			
 		}
 	}
 
+	public static final void send(DataOutputStream par1, String par2, int par3) throws IOException {
+		par1.writeByte(par3);
+		if (par2 != null) {
+			par1.writeUTF(par2);
+		}		
+		par1.flush();
+	}
+	
 }
