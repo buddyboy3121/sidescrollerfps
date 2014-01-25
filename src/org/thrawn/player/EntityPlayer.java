@@ -1,15 +1,9 @@
 package org.thrawn.player;
 
-import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.geom.Line;
-import org.newdawn.slick.geom.Point;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.thrawn.main.Game;
 import org.thrawn.physics.Physics;
-import org.thrawn.world.LevelData;
-import org.thrawn.world.tiles.Tile;
 
 /**
  * Represents an entity that spawns automatically in the world.<br>
@@ -37,7 +31,7 @@ public class EntityPlayer implements Entity {
 	
 	public static boolean jumping = false;
 	public static boolean onTile = false;
-	public static boolean hitTile = false;
+	public static boolean hitTile = true;
 	
 
 	@Override

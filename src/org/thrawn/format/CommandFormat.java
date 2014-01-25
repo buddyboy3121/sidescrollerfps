@@ -213,7 +213,7 @@ public final class CommandFormat {
 	
 	/**
 	 * Returns the elements of the {@link String} formatted command.<br>
-	 * There must be atleast one element to use this function.
+	 * There must be at least one element to use this function.
 	 * @param cmd The {@link String} format of the command to parse.
 	 * @return the elements of the {@link String} formatted command.
 	 */

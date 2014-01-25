@@ -2,7 +2,7 @@ package org.thrawn.item;
 
 public class ItemGunWeapon extends ItemWeapon {
 
-	private int ammunation;
+	private int ammunition;
 	private int magazines;
 	private int magAmmo;
 	
@@ -12,18 +12,18 @@ public class ItemGunWeapon extends ItemWeapon {
 
 	/**
 	 * Fire the gun.<br>
-	 * This automatically removes ammunation from the magazine.<br>
+	 * This automatically removes ammunition from the magazine.<br>
 	 * When there's no magazines left, an event will be raised.
 	 */
 	public final void fire() {
-		if (ammunation >= 1) {         			// Checks if there's any ammunation left in the magazine.
-			ammunation--;			   			// Removes ammunation from the magazine. (bullets has been shot)
+		if (ammunition >= 1) {         			// Checks if there's any ammunition left in the magazine.
+			ammunition--;			   			// Removes ammunition from the magazine. (bullets has been shot)
 			onFire();							// Raises the onFire() event to notify that a shot has been made.
 		} else {
 			onAmmunationEmpty();
 			if (magazines >= 1) {      			// Checks if there are any magazines left.
-				ammunation += magAmmo; 			// Adds new ammunation from the magazines. (reloads)
-				magazines--; 		   			// Removes the magazine that the ammunation was taken from. (takes a magazine)
+				ammunition += magAmmo; 			// Adds new ammunition from the magazines. (reloads)
+				magazines--; 		   			// Removes the magazine that the ammunition was taken from. (takes a magazine)
 				onMagazineChange(magazines);	// Raises the onMagazineChange() event to notify that the magazine has been changed.
 				onReload();						// Raises the onReload() event to notify that a reload of the gun has been made.
 			} else {
@@ -39,7 +39,7 @@ public class ItemGunWeapon extends ItemWeapon {
 	
 	/**
 	 * Occurs when the magazine of the gun is empty.<br>
-	 * You can refill the ammunation by picking up a gun of the same type.
+	 * You can refill the ammunition by picking up a gun of the same type.
 	 */
 	public void onMagazineEmpty() {}
 	
@@ -50,12 +50,12 @@ public class ItemGunWeapon extends ItemWeapon {
 	public void onMagazineChange(int magazine) {}
 	
 	/**
-	 * Occurs when the ammunation of a magazine is full.
+	 * Occurs when the ammunition of a magazine is full.
 	 */
-	public void onAmmunationFull() {}
+	public void onAmmunitionFull() {}
 	
 	/**
-	 * Occurs when the ammunation of a magazine is empty.
+	 * Occurs when the ammunition of a magazine is empty.
 	 */
 	public void onAmmunationEmpty() {}
 	
